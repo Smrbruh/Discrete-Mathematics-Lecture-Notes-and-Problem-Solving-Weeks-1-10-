@@ -1,0 +1,424 @@
+\documentclass[11pt,a4paper]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tocloft}
+
+% Page style
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Lecture Notes: Sets and Relations}
+\fancyhead[R]{\small \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% Section formatting
+\titleformat{\section}{\Large\bfseries}{Section \thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{1em}{}
+
+% Adjust table of contents appearance
+\renewcommand{\cftsecfont}{\bfseries}
+\renewcommand{\cftsubsecfont}{\normalfont}
+
+\begin{document}
+
+% Title page
+\begin{titlepage}
+    \centering
+    \vspace*{4cm}
+    
+    {\Huge\bfseries Lecture Notes:\\ Sets and Relations\par}
+    \vspace{1cm}
+    {\Large Discrete Mathematics\par}
+    \vspace{2cm}
+    {\large \textbf{Author:} Bakdaulet Sotsial\par}
+    \vspace{1cm}
+    
+    \vfill
+    {\small Astana IT University \par}
+    \vspace*{2cm}
+\end{titlepage}
+
+% Table of contents
+\tableofcontents
+\newpage
+
+% Section 1: Sets
+\section{Sets}
+
+\textbf{Definition (Set).} A \textit{set} is a well-defined collection of distinct objects, considered as an object in its own right. The objects that belong to a set are called its \textit{elements} or \textit{members}. For any object $x$ and any set $A$, we write $x \in A$ to denote that $x$ is an element of $A$, and $x \notin A$ to denote that $x$ is not an element of $A$.
+
+\textbf{Remark.} The term "well-defined" means that given any object, it must be unambiguously determinable whether that object belongs to the set or not. Sets are typically denoted by uppercase letters: $A, B, C, \dots$, while their elements are denoted by lowercase letters: $a, b, c, \dots$
+
+\subsection{Notation and Representation}
+
+There are two standard ways to describe a set:
+
+\begin{enumerate}[label=(\arabic*)]
+    \item \textbf{Roster Method (Tabular Form):} Listing all elements of the set, separated by commas, enclosed in curly braces.
+    \begin{equation*}
+        A = \{a, e, i, o, u\}, \quad B = \{1, 2, 3, 4, 5\}
+    \end{equation*}
+    
+    \item \textbf{Set-Builder Notation:} Describing the properties that characterize the elements of the set.
+    \begin{equation*}
+        A = \{x \mid x \text{ is a vowel in the English alphabet}\}, \quad B = \{x \in \mathbb{N} \mid x \leq 5\}
+    \end{equation*}
+    The vertical bar $\mid$ is read as "such that".
+\end{enumerate}
+
+\textbf{Definition (Common Sets).} The following sets are fundamental in mathematics:
+\begin{itemize}[label=--]
+    \item $\mathbb{N} = \{1, 2, 3, \dots\}$: the set of natural numbers.
+    \item $\mathbb{Z} = \{\dots, -2, -1, 0, 1, 2, \dots\}$: the set of integers.
+    \item $\mathbb{Q} = \{\frac{a}{b} \mid a, b \in \mathbb{Z}, b \neq 0\}$: the set of rational numbers.
+    \item $\mathbb{R}$: the set of real numbers.
+    \item $\mathbb{C}$: the set of complex numbers.
+    \item $\emptyset$ or $\{\}$: the empty set, containing no elements.
+\end{itemize}
+
+\textbf{Definition (Subset and Set Equality).}
+\begin{itemize}
+    \item We say $A$ is a \textit{subset} of $B$, denoted $A \subseteq B$, if every element of $A$ is also an element of $B$. Formally: $\forall x\,(x \in A \to x \in B)$.
+    \item A set $A$ is a \textit{proper subset} of $B$, denoted $A \subset B$, if $A \subseteq B$ and $A \neq B$.
+    \item Two sets $A$ and $B$ are \textit{equal}, denoted $A = B$, if $A \subseteq B$ and $B \subseteq A$.
+\end{itemize}
+
+\textbf{Definition (Power Set).} The \textit{power set} of a set $A$, denoted $\mathcal{P}(A)$, is the set of all subsets of $A$.
+\begin{equation*}
+    \mathcal{P}(A) = \{X \mid X \subseteq A\}
+\end{equation*}
+
+\subsection{Types of Sets}
+
+\begin{itemize}[label=\(\triangleright\)]
+    \item \textbf{Empty Set (Null Set):} The unique set containing no elements, denoted $\emptyset$ or $\{\}$. For any set $A$, $\emptyset \subseteq A$.
+    \item \textbf{Singleton Set:} A set containing exactly one element, e.g., $\{a\}$.
+    \item \textbf{Finite Set:} A set with a finite number of elements. The number of elements (cardinality) of a finite set $A$ is denoted $|A|$.
+    \item \textbf{Infinite Set:} A set that is not finite. Examples: $\mathbb{N}$, $\mathbb{Z}$, $\mathbb{R}$.
+    \item \textbf{Universal Set:} In a given context, the set containing all elements under consideration, denoted $U$ or $\mathbf{U}$. All other sets in that context are subsets of $U$.
+\end{itemize}
+
+\begin{example}
+Let $A = \{1, 2, 3\}$. Then $\mathcal{P}(A) = \{\emptyset, \{1\}, \{2\}, \{3\}, \{1,2\}, \{1,3\}, \{2,3\}, \{1,2,3\}\}$. Note that $|A| = 3$ and $|\mathcal{P}(A)| = 2^3 = 8$.
+\end{example}
+
+% Section 2: Set Operations
+\section{Set Operations}
+
+\subsection{Union, Intersection, Difference, and Complement}
+
+\textbf{Definition (Union).} The \textit{union} of sets $A$ and $B$, denoted $A \cup B$, is the set of all elements that belong to $A$ or to $B$ (or both). Formally:
+\begin{equation*}
+    A \cup B = \{x \mid x \in A \lor x \in B\}
+\end{equation*}
+
+\textbf{Definition (Intersection).} The \textit{intersection} of sets $A$ and $B$, denoted $A \cap B$, is the set of all elements that belong to both $A$ and $B$. Formally:
+\begin{equation*}
+    A \cap B = \{x \mid x \in A \land x \in B\}
+\end{equation*}
+
+\textbf{Definition (Disjoint Sets).} Two sets $A$ and $B$ are \textit{disjoint} if $A \cap B = \emptyset$.
+
+\textbf{Definition (Set Difference).} The \textit{difference} of $A$ and $B$, denoted $A \setminus B$ or $A - B$, is the set of elements that belong to $A$ but not to $B$.
+\begin{equation*}
+    A \setminus B = \{x \mid x \in A \land x \notin B\}
+\end{equation*}
+
+\textbf{Definition (Complement).} The \textit{complement} of a set $A$, denoted $\overline{A}$ or $A^c$ or $A'$, is the set of elements (in the universal set $U$) that are not in $A$.
+\begin{equation*}
+    \overline{A} = U \setminus A = \{x \in U \mid x \notin A\}
+\end{equation*}
+
+\subsection{Algebra of Sets: Fundamental Laws}
+
+Let $A$, $B$, $C$ be subsets of a universal set $U$. The following identities hold:
+
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+    \item \textbf{Identity Laws:}
+    \begin{align*}
+        A \cup \emptyset &= A, & A \cap U &= A
+    \end{align*}
+    
+    \item \textbf{Domination Laws:}
+    \begin{align*}
+        A \cup U &= U, & A \cap \emptyset &= \emptyset
+    \end{align*}
+    
+    \item \textbf{Idempotent Laws:}
+    \begin{align*}
+        A \cup A &= A, & A \cap A &= A
+    \end{align*}
+    
+    \item \textbf{Double Complement Law:}
+    \begin{align*}
+        \overline{(\overline{A})} = A
+    \end{align*}
+    
+    \item \textbf{Commutative Laws:}
+    \begin{align*}
+        A \cup B &= B \cup A, & A \cap B &= B \cap A
+    \end{align*}
+    
+    \item \textbf{Associative Laws:}
+    \begin{align*}
+        (A \cup B) \cup C &= A \cup (B \cup C) \\
+        (A \cap B) \cap C &= A \cap (B \cap C)
+    \end{align*}
+    
+    \item \textbf{Distributive Laws:}
+    \begin{align*}
+        A \cup (B \cap C) &= (A \cup B) \cap (A \cup C) \\
+        A \cap (B \cup C) &= (A \cap B) \cup (A \cap C)
+    \end{align*}
+    
+    \item \textbf{De Morgan's Laws:}
+    \begin{align*}
+        \overline{A \cup B} &= \overline{A} \cap \overline{B} \\
+        \overline{A \cap B} &= \overline{A} \cup \overline{B}
+    \end{align*}
+    
+    \item \textbf{Absorption Laws:}
+    \begin{align*}
+        A \cup (A \cap B) &= A, & A \cap (A \cup B) &= A
+    \end{align*}
+    
+    \item \textbf{Complement Laws:}
+    \begin{align*}
+        A \cup \overline{A} &= U, & A \cap \overline{A} &= \emptyset
+    \end{align*}
+\end{enumerate}
+
+\begin{example}
+Prove that $A \cap (B \setminus C) = (A \cap B) \setminus (A \cap C)$.
+
+\textbf{Solution.} We use set-builder notation and logical equivalences.
+\begin{align*}
+    x \in A \cap (B \setminus C) &\iff x \in A \land x \in (B \setminus C) \\
+    &\iff x \in A \land (x \in B \land x \notin C) \\
+    &\iff (x \in A \land x \in B) \land (x \in A \land x \notin C) \quad \text{(Idempotent, Commutative)} \\
+    &\iff (x \in A \cap B) \land \neg(x \in A \cap C) \\
+    &\iff x \in (A \cap B) \setminus (A \cap C).
+\end{align*}
+Thus, the equality holds.
+\end{example}
+
+\begin{example}
+Simplify $\overline{A} \cup (A \cap B)$.
+
+\textbf{Solution.}
+\begin{align*}
+    \overline{A} \cup (A \cap B) &\equiv (\overline{A} \cup A) \cap (\overline{A} \cup B) \quad \text{(Distributive Law)} \\
+    &\equiv U \cap (\overline{A} \cup B) \quad \text{(Complement Law)} \\
+    &\equiv \overline{A} \cup B \quad \text{(Identity Law)}.
+\end{align*}
+\end{example}
+
+% Section 3: Venn Diagrams
+\section{Venn Diagrams}
+
+\textbf{Definition (Venn Diagram).} A \textit{Venn diagram} is a graphical representation of sets where the universal set $U$ is usually depicted as a rectangle, and subsets of $U$ are represented by circles or other closed curves drawn inside the rectangle. Overlapping regions indicate intersections, and shading is used to highlight the result of set operations.
+
+\textbf{Remark.} Venn diagrams are extremely useful for visualizing set relationships, verifying set identities for small numbers of sets (typically 2 or 3), and facilitating intuitive understanding of set operations.
+
+\subsection{Representation of Set Operations}
+
+Consider two sets $A$ and $B$ within a universal set $U$:
+
+\begin{itemize}
+    \item \textbf{Union $A \cup B$:} The diagram consists of two overlapping circles labeled $A$ and $B$ inside a rectangle $U$. The union corresponds to the entire region covered by both circles — all points that lie in $A$, in $B$, or in their overlap. This entire combined area is shaded.
+    
+    \item \textbf{Intersection $A \cap B$:} Using the same two overlapping circles, only the overlapping middle lens-shaped region common to both circles is shaded. This represents elements belonging to both $A$ and $B$ simultaneously.
+    
+    \item \textbf{Difference $A \setminus B$:} The region of circle $A$ that does not overlap with circle $B$ (the crescent-moon-shaped part of $A$) is shaded. This represents elements in $A$ but not in $B$.
+    
+    \item \textbf{Complement $\overline{A}$:} The entire rectangle $U$ is considered, and the circle $A$ is left unshaded while everything outside $A$ but inside $U$ is shaded. This represents all elements not in $A$.
+    
+    \item \textbf{Symmetric Difference $A \triangle B = (A \setminus B) \cup (B \setminus A)$:} The two crescent-shaped regions (the parts of each circle not overlapping the other) are both shaded, while the overlapping lens region remains unshaded. This represents elements in exactly one of the two sets.
+\end{itemize}
+
+\begin{example}
+Using a Venn diagram, we can verify De Morgan's law: $\overline{A \cup B} = \overline{A} \cap \overline{B}$. For $A \cup B$, the shaded area is both circles combined. The complement of this is the region outside both circles but inside $U$. On the right side, $\overline{A}$ is everything outside $A$, and $\overline{B}$ is everything outside $B$; their intersection is precisely the region outside both circles. Visual inspection confirms they are the same region.
+\end{example}
+
+% Section 4: Binary Relations
+\section{Binary Relations}
+
+\textbf{Definition (Ordered Pair).} An \textit{ordered pair} $(a, b)$ is a pair of elements where the order matters: $(a, b) = (c, d)$ if and only if $a = c$ and $b = d$.
+
+\textbf{Definition (Cartesian Product).} The \textit{Cartesian product} of sets $A$ and $B$, denoted $A \times B$, is the set of all ordered pairs whose first component is from $A$ and second component is from $B$.
+\begin{equation*}
+    A \times B = \{(a, b) \mid a \in A, b \in B\}
+\end{equation*}
+
+\begin{example}
+Let $A = \{1, 2\}$ and $B = \{x, y, z\}$. Then
+\begin{equation*}
+    A \times B = \{(1,x), (1,y), (1,z), (2,x), (2,y), (2,z)\}.
+\end{equation*}
+Note that $|A \times B| = |A| \times |B| = 2 \cdot 3 = 6$.
+\end{example}
+
+\textbf{Definition (Binary Relation).} A \textit{binary relation} $R$ from a set $A$ to a set $B$ is a subset of the Cartesian product $A \times B$. If $(a, b) \in R$, we say that "$a$ is related to $b$" and write $a \, R \, b$. If $A = B$, we say $R$ is a relation \textit{on} $A$.
+
+\subsection{Representations of Relations}
+
+\textbf{1. Set of Ordered Pairs.} The most direct representation: list all pairs that satisfy the relation.
+
+\textbf{2. Matrix Representation.} For finite sets $A = \{a_1, a_2, \dots, a_m\}$ and $B = \{b_1, b_2, \dots, b_n\}$, a relation $R \subseteq A \times B$ can be represented by an $m \times n$ matrix $M_R = [m_{ij}]$ where:
+\begin{equation*}
+    m_{ij} = \begin{cases}
+        1 & \text{if } (a_i, b_j) \in R \\
+        0 & \text{otherwise}
+    \end{cases}
+\end{equation*}
+
+\textbf{3. Directed Graph (Digraph).} For a relation $R$ on a set $A$, we draw a vertex for each element of $A$, and a directed edge (arrow) from $a$ to $b$ whenever $(a, b) \in R$.
+
+\begin{example}
+Let $A = \{1, 2, 3\}$ and define the relation $R$ on $A$ by: $R = \{(1,1), (1,2), (2,3), (3,1), (3,3)\}$. Its matrix is:
+\begin{equation*}
+    M_R = \begin{pmatrix}
+        1 & 1 & 0 \\
+        0 & 0 & 1 \\
+        1 & 0 & 1
+    \end{pmatrix}
+\end{equation*}
+In the digraph, vertices 1, 2, 3 have a loop at 1 and 3 (since $(1,1), (3,3) \in R$), and directed edges $1 \to 2$, $2 \to 3$, $3 \to 1$.
+\end{example}
+
+% Section 5: Properties of Relations
+\section{Properties of Relations}
+
+Let $R$ be a relation on a set $A$. The following are fundamental properties that $R$ may possess.
+
+\textbf{Definition (Reflexive).} $R$ is \textit{reflexive} if for every element $a \in A$, $(a, a) \in R$. That is, every element is related to itself.
+
+\textbf{Definition (Symmetric).} $R$ is \textit{symmetric} if for all $a, b \in A$, whenever $(a, b) \in R$, then $(b, a) \in R$. The relation goes both ways.
+
+\textbf{Definition (Antisymmetric).} $R$ is \textit{antisymmetric} if for all $a, b \in A$, whenever $(a, b) \in R$ and $(b, a) \in R$, then $a = b$. In other words, the only way to have mutual relation is to be the same element.
+
+\textbf{Definition (Transitive).} $R$ is \textit{transitive} if for all $a, b, c \in A$, whenever $(a, b) \in R$ and $(b, c) \in R$, then $(a, c) \in R$.
+
+\subsection{Examples and Counterexamples}
+
+\begin{example}[Reflexive]
+Let $A = \{1, 2, 3\}$.
+\begin{itemize}
+    \item $R_1 = \{(1,1), (2,2), (3,3)\}$ is reflexive (and also symmetric, antisymmetric, transitive).
+    \item $R_2 = \{(1,1), (2,2)\}$ is not reflexive on $A$ because $(3,3) \notin R_2$.
+    \item $R_3 = \{(1,1), (1,2), (2,2), (3,3)\}$ is reflexive (every element has a self-loop).
+\end{itemize}
+\end{example}
+
+\begin{example}[Symmetric]
+Let $A = \{a, b, c\}$.
+\begin{itemize}
+    \item $R = \{(a,b), (b,a), (a,c), (c,a)\}$ is symmetric because for every arrow, there is a reverse arrow.
+    \item $R' = \{(a,b), (b,a), (a,c)\}$ is \textbf{not} symmetric because $(a,c) \in R'$ but $(c,a) \notin R'$.
+\end{itemize}
+\end{example}
+
+\begin{example}[Antisymmetric]
+Let $A = \{1, 2, 3\}$.
+\begin{itemize}
+    \item The relation "$\leq$" on $\mathbb{Z}$ is antisymmetric: if $x \leq y$ and $y \leq x$, then $x = y$.
+    \item $R = \{(1,2), (2,3), (1,3)\}$ is antisymmetric (vacuously, since no symmetric pairs exist).
+    \item $R' = \{(1,2), (2,1)\}$ is \textbf{not} antisymmetric because $(1,2) \in R'$ and $(2,1) \in R'$, yet $1 \neq 2$.
+\end{itemize}
+\end{example}
+
+\begin{example}[Transitive]
+Let $A = \{1, 2, 3\}$.
+\begin{itemize}
+    \item $R = \{(1,2), (2,3), (1,3)\}$ is transitive.
+    \item $R' = \{(1,2), (2,3)\}$ is \textbf{not} transitive on $A$ because $(1,2) \in R'$ and $(2,3) \in R'$, but $(1,3) \notin R'$.
+\end{itemize}
+\end{example}
+
+% Section 6: Equivalence Relations
+\section{Equivalence Relations}
+
+\textbf{Definition (Equivalence Relation).} A relation $R$ on a set $A$ is called an \textit{equivalence relation} if it is reflexive, symmetric, and transitive.
+
+Equivalence relations generalize the notion of equality. They partition the set into disjoint subsets where elements within each subset are considered "equivalent".
+
+\textbf{Definition (Equivalence Class).} Let $R$ be an equivalence relation on $A$. For any $a \in A$, the \textit{equivalence class} of $a$, denoted $[a]_R$ or simply $[a]$, is the set of all elements in $A$ that are related to $a$ by $R$:
+\begin{equation*}
+    [a] = \{x \in A \mid x \, R \, a\}
+\end{equation*}
+
+\textbf{Theorem (Partition).} The equivalence classes of an equivalence relation $R$ on $A$ form a \textit{partition} of $A$; that is, they are non-empty, pairwise disjoint subsets of $A$ whose union is $A$. Conversely, any partition of $A$ defines an equivalence relation on $A$ where two elements are related if they belong to the same block of the partition.
+
+\begin{example}
+Let $A = \{1, 2, 3, 4\}$ and define $R$ by: $x \, R \, y$ if and only if $x \equiv y \pmod{2}$ (i.e., $x$ and $y$ have the same parity). Then $R$ is reflexive, symmetric, and transitive, hence an equivalence relation. The equivalence classes are:
+\begin{equation*}
+    [1] = \{1, 3\} \quad \text{and} \quad [2] = \{2, 4\}.
+\end{equation*}
+These two classes partition $A$: $A = [1] \cup [2]$ and $[1] \cap [2] = \emptyset$.
+\end{example}
+
+\begin{example}
+Define a relation $\sim$ on $\mathbb{Z}$ by $a \sim b$ iff $a - b$ is divisible by $3$. This is the relation of congruence modulo $3$. The equivalence classes are:
+\begin{align*}
+    [0] &= \{\dots, -6, -3, 0, 3, 6, \dots\} \\
+    [1] &= \{\dots, -5, -2, 1, 4, 7, \dots\} \\
+    [2] &= \{\dots, -4, -1, 2, 5, 8, \dots\}
+\end{align*}
+These three classes partition the integers.
+\end{example}
+
+% Section 7: Partial and Total Orders
+\section{Partial and Total Orders}
+
+\subsection{Partial Orders}
+
+\textbf{Definition (Partial Order).} A relation $R$ on a set $A$ is a \textit{partial order} if it is reflexive, antisymmetric, and transitive. A set together with a partial order is called a \textit{partially ordered set} or \textit{poset}, often denoted $(A, \preceq)$.
+
+\textbf{Remark.} The symbol $\preceq$ is often used for a generic partial order. The term "partial" indicates that not every pair of elements need be comparable.
+
+\textbf{Definition (Comparable Elements).} In a poset $(A, \preceq)$, two elements $a, b \in A$ are \textit{comparable} if either $a \preceq b$ or $b \preceq a$. Otherwise, they are \textit{incomparable}.
+
+\subsection{Hasse Diagrams}
+
+A \textit{Hasse diagram} is a graphical representation of a finite poset, drawn with the following conventions:
+\begin{itemize}
+    \item Elements are represented by points (or vertices).
+    \item If $a \preceq b$ and $a \neq b$, then the point for $b$ is placed higher than the point for $a$.
+    \item A line segment is drawn from $a$ up to $b$ if $a \preceq b$ and there is no element $c$ distinct from both such that $a \preceq c \preceq b$ (i.e., $b$ \textit{covers} $a$).
+    \item Reflexive loops and edges implied by transitivity are omitted for clarity.
+\end{itemize}
+
+\begin{example}
+Let $A = \{1, 2, 3, 4\}$ and let $\preceq$ be the usual "less than or equal to" relation ($\leq$). This is a total order, but as a partial order, its Hasse diagram consists of the elements placed vertically: 4 at the top, then 3 below it, then 2, then 1 at the bottom, with a line segment connecting each consecutive pair: $1$--$2$--$3$--$4$. This forms a vertical chain.
+\end{example}
+
+\begin{example}[Divisibility Poset]
+Consider the set $A = \{1, 2, 3, 4, 6, 12\}$ with the relation $a \preceq b$ if and only if $a$ divides $b$. The Hasse diagram places 1 at the bottom. Above 1 are the elements 2 and 3 (since $1|2$ and $1|3$). Above 2 we place 4 and 6 (since $2|4$ and $2|6$). Also, 3 has an edge to 6 (since $3|6$). Finally, both 4 and 6 have edges to 12 at the top. Elements 2 and 3 are incomparable (neither divides the other); elements 4 and 6 are incomparable.
+\end{example}
+
+\subsection{Total Orders}
+
+\textbf{Definition (Total Order).} A partial order $\preceq$ on a set $A$ is a \textit{total order} (or \textit{linear order}) if every pair of elements in $A$ is comparable. That is, for all $a, b \in A$, either $a \preceq b$ or $b \preceq a$.
+
+\textbf{Definition (Chain).} A poset that is totally ordered is called a \textit{chain}. Its Hasse diagram is a single vertical line (or a straight line of ascending elements).
+
+\begin{example}
+The usual order $\leq$ on $\mathbb{R}$ is a total order: for any real numbers $x$ and $y$, either $x \leq y$ or $y \leq x$.
+\end{example}
+
+\begin{example}
+The divisibility relation on $\mathbb{N}$ is \textbf{not} a total order because, for instance, 2 and 3 are incomparable: $2 \nmid 3$ and $3 \nmid 2$.
+\end{example}
+
+\textbf{Definition (Well-Ordering).} A totally ordered set is \textit{well-ordered} if every non-empty subset has a least element. The set $\mathbb{N}$ with the usual order is well-ordered; $\mathbb{Z}$ and $\mathbb{R}$ are not well-ordered.
+
+\textbf{Remark.} Partial and total orders are foundational in set theory, algebra, and computer science (e.g., sorting algorithms, lattice theory, domain theory).
+
+\end{document}
