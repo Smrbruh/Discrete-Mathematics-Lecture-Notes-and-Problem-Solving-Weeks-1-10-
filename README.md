@@ -23,18 +23,7 @@ My lecture notes for a 10-week Discrete Mathematics course. Written in LaTeX, co
 | 9 | Paths and circuits: Eulerian circuits, Hamiltonian cycles, adjacency matrix |
 | 10 | Planar graphs and colorings: planar graphs, graph coloring |
 
-## Structure
 
-```
-/
-├── week01.pdf
-├── week02.pdf
-├── ...
-├── week10.pdf
-├── notes/
-│   └── *.tex (LaTeX sources)
-└── figures/
-    └── diagrams and illustrations
 ```
 
 ## Compiling
@@ -52,4 +41,3 @@ Personal lecture notes, not official course materials. Might have a typo here an
 ## License
 
 Free to use and share with attribution.
-```
