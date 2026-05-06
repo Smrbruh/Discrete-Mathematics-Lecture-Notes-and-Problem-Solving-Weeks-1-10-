@@ -1,0 +1,420 @@
+\documentclass[11pt,a4paper]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tocloft}
+
+% Page style
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Lecture Notes: The Integers and Number Theory}
+\fancyhead[R]{\small \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% Section formatting
+\titleformat{\section}{\Large\bfseries}{Section \thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{1em}{}
+
+% Adjust table of contents appearance
+\renewcommand{\cftsecfont}{\bfseries}
+\renewcommand{\cftsubsecfont}{\normalfont}
+
+\begin{document}
+
+% Title page
+\begin{titlepage}
+    \centering
+    \vspace*{4cm}
+    
+    {\Huge\bfseries Lecture Notes:\\ The Integers and Number Theory\par}
+    \vspace{1cm}
+    {\Large Discrete Mathematics\par}
+    \vspace{2cm}
+    {\large \textbf{Author:} Bakdaulet Sotsial\par}
+    \vspace{1cm}
+    
+    \vfill
+    {\small Astana IT University \par}
+    \vspace*{2cm}
+\end{titlepage}
+
+% Table of contents
+\tableofcontents
+\newpage
+
+% Section 1: Divisibility and Prime Numbers
+\section{Divisibility and Prime Numbers}
+
+\subsection{Divisibility}
+
+\textbf{Definition (Divisibility).} Let $a, b \in \mathbb{Z}$. We say that $a$ \textit{divides} $b$, denoted $a \mid b$, if there exists an integer $c$ such that $b = ac$. If $a$ does not divide $b$, we write $a \nmid b$.
+
+\textbf{Remark.} We often say "$a$ is a divisor of $b$", "$b$ is a multiple of $a$", or "$b$ is divisible by $a$". By convention, $a \mid 0$ for every non-zero integer $a$, but $0 \mid b$ only if $b = 0$.
+
+\textbf{Theorem (Properties of Divisibility).} Let $a, b, c \in \mathbb{Z}$.
+\begin{enumerate}[label=(\roman*)]
+    \item Reflexivity: $a \mid a$ (for $a \neq 0$).
+    \item Transitivity: If $a \mid b$ and $b \mid c$, then $a \mid c$.
+    \item Linearity: If $a \mid b$ and $a \mid c$, then $a \mid (mb + nc)$ for any $m, n \in \mathbb{Z}$.
+    \item If $a \mid b$ and $b \mid a$, then $a = \pm b$.
+    \item If $a \mid b$ and $a, b > 0$, then $a \leq b$.
+\end{enumerate}
+
+\begin{example}
+$3 \mid 12$ because $12 = 3 \cdot 4$. Also, $7 \mid -21$ because $-21 = 7 \cdot (-3)$. However, $5 \nmid 12$ since no integer $c$ satisfies $12 = 5c$.
+\end{example}
+
+\begin{example}
+Since $4 \mid 24$ and $4 \mid 36$, by linearity $4 \mid (2 \cdot 24 + 3 \cdot 36) = 48 + 108 = 156$, and indeed $156 = 4 \cdot 39$.
+\end{example}
+
+\subsection{Prime and Composite Numbers}
+
+\textbf{Definition (Prime Number).} A positive integer $p > 1$ is called \textit{prime} if its only positive divisors are $1$ and $p$ itself. A positive integer $n > 1$ that is not prime is called \textit{composite}. The integer $1$ is neither prime nor composite; it is called a \textit{unit}.
+
+\textbf{Examples of primes:} $2, 3, 5, 7, 11, 13, 17, 19, 23, \dots$
+\textbf{Examples of composites:} $4, 6, 8, 9, 10, 12, \dots$
+
+\textbf{Theorem (Fundamental Theorem of Arithmetic).} Every integer $n > 1$ can be expressed uniquely as a product of prime numbers, up to the order of the factors. That is, there exist unique primes $p_1 < p_2 < \cdots < p_k$ and unique positive integers $e_1, e_2, \dots, e_k$ such that
+\begin{equation*}
+    n = p_1^{e_1} p_2^{e_2} \cdots p_k^{e_k}.
+\end{equation*}
+
+\begin{example}
+$60 = 2^2 \cdot 3 \cdot 5$. The prime factorization is unique: no other combination of primes multiplied together yields $60$.
+\end{example}
+
+\begin{example}
+$84 = 2^2 \cdot 3 \cdot 7$, and $100 = 2^2 \cdot 5^2$.
+\end{example}
+
+\textbf{Theorem (Euclid's Theorem).} There are infinitely many prime numbers.
+
+\textbf{Proof Sketch.} Suppose there were only finitely many primes $p_1, p_2, \dots, p_k$. Consider $N = p_1 p_2 \cdots p_k + 1$. Then $N$ is not divisible by any of the listed primes (it leaves remainder $1$), so $N$ must be prime itself or divisible by a new prime not in the list, a contradiction.
+
+% Section 2: Modular Arithmetic
+\section{Modular Arithmetic}
+
+\textbf{Definition (Congruence).} Let $a, b \in \mathbb{Z}$ and let $n \in \mathbb{Z}^+$ (a positive integer). We say that $a$ is \textit{congruent} to $b$ modulo $n$, denoted
+\begin{equation*}
+    a \equiv b \pmod{n},
+\end{equation*}
+if $n \mid (a - b)$. The integer $n$ is called the \textit{modulus}.
+
+\textbf{Remark.} $a \equiv b \pmod{n}$ means that $a$ and $b$ have the same remainder upon division by $n$. Equivalently, $a = b + kn$ for some integer $k$.
+
+\begin{example}
+$17 \equiv 5 \pmod{12}$ because $17 - 5 = 12$, which is divisible by $12$. Also, $23 \equiv 2 \pmod{7}$ because $23 - 2 = 21 = 3 \cdot 7$.
+\end{example}
+
+\begin{example}
+$-8 \equiv 2 \pmod{5}$ because $-8 - 2 = -10 = -2 \cdot 5$. Note that negative numbers are perfectly valid in modular arithmetic.
+\end{example}
+
+\subsection{Properties of Congruences}
+
+\textbf{Theorem (Basic Properties).} For a fixed modulus $n$, congruence modulo $n$ is an equivalence relation on $\mathbb{Z}$:
+\begin{enumerate}[label=(\roman*)]
+    \item Reflexivity: $a \equiv a \pmod{n}$.
+    \item Symmetry: If $a \equiv b \pmod{n}$, then $b \equiv a \pmod{n}$.
+    \item Transitivity: If $a \equiv b \pmod{n}$ and $b \equiv c \pmod{n}$, then $a \equiv c \pmod{n}$.
+\end{enumerate}
+
+\textbf{Theorem (Arithmetic Operations).} Suppose $a \equiv b \pmod{n}$ and $c \equiv d \pmod{n}$. Then:
+\begin{align*}
+    a + c &\equiv b + d \pmod{n}, \\
+    a - c &\equiv b - d \pmod{n}, \\
+    ac &\equiv bd \pmod{n}.
+\end{align*}
+
+\textbf{Remark.} Congruences can be added, subtracted, and multiplied just like equations. However, division is more delicate and is not always valid (it requires coprime conditions).
+
+\begin{example}
+Compute $7 \cdot 9 + 4 \cdot 11$ modulo $5$.
+
+\textbf{Solution.} Reduce first:
+\begin{align*}
+    7 &\equiv 2 \pmod{5}, & 9 &\equiv 4 \pmod{5}, \\
+    4 &\equiv 4 \pmod{5}, & 11 &\equiv 1 \pmod{5}.
+\end{align*}
+Then:
+\begin{equation*}
+    7 \cdot 9 + 4 \cdot 11 \equiv 2 \cdot 4 + 4 \cdot 1 = 8 + 4 = 12 \equiv 2 \pmod{5}.
+\end{equation*}
+\end{example}
+
+% Section 3: Euclidean Algorithm and GCD
+\section{Euclidean Algorithm and GCD}
+
+\subsection{Greatest Common Divisor}
+
+\textbf{Definition (Greatest Common Divisor).} Let $a, b \in \mathbb{Z}$, not both zero. The \textit{greatest common divisor} of $a$ and $b$, denoted $\gcd(a, b)$, is the largest positive integer $d$ that divides both $a$ and $b$.
+
+\textbf{Definition (Coprime).} Two integers $a$ and $b$ are said to be \textit{coprime} (or \textit{relatively prime}) if $\gcd(a, b) = 1$.
+
+\begin{example}
+$\gcd(24, 36) = 12$, because the common divisors of $24$ and $36$ are $1, 2, 3, 4, 6, 12$, and the largest is $12$.
+\end{example}
+
+\begin{example}
+$\gcd(14, 25) = 1$, so $14$ and $25$ are coprime.
+\end{example}
+
+\subsection{The Euclidean Algorithm}
+
+The Euclidean algorithm is an efficient method for computing $\gcd(a, b)$ based on the following principle:
+
+\textbf{Theorem (Division Algorithm).} For any integers $a$ and $b$ with $b > 0$, there exist unique integers $q$ (the quotient) and $r$ (the remainder) such that
+\begin{equation*}
+    a = bq + r, \quad 0 \leq r < b.
+\end{equation*}
+
+\textbf{Lemma.} $\gcd(a, b) = \gcd(b, r)$, where $r$ is the remainder when $a$ is divided by $b$.
+
+\textbf{Algorithm (Euclidean Algorithm).} To compute $\gcd(a, b)$ with $a \geq b > 0$:
+\begin{enumerate}[label=\textbf{Step \arabic*:}]
+    \item Set $r_0 = a$, $r_1 = b$.
+    \item For $i = 1, 2, 3, \dots$, compute $r_{i+1}$ as the remainder when $r_{i-1}$ is divided by $r_i$:
+    \begin{equation*}
+        r_{i-1} = q_i r_i + r_{i+1}, \quad 0 \leq r_{i+1} < r_i.
+    \end{equation*}
+    \item Stop when $r_{k+1} = 0$. Then $\gcd(a, b) = r_k$, the last non-zero remainder.
+\end{enumerate}
+
+\begin{example}
+Compute $\gcd(252, 105)$ using the Euclidean algorithm.
+
+\textbf{Solution.}
+\begin{align*}
+    252 &= 2 \cdot 105 + 42 \\
+    105 &= 2 \cdot 42 + 21 \\
+    42 &= 2 \cdot 21 + 0.
+\end{align*}
+The last non-zero remainder is $21$, so $\gcd(252, 105) = 21$.
+\end{example}
+
+\subsection{Extended Euclidean Algorithm}
+
+The \textbf{Extended Euclidean Algorithm} not only computes $\gcd(a, b)$ but also finds integers $x$ and $y$ (called \textit{Bézout coefficients}) such that
+\begin{equation*}
+    ax + by = \gcd(a, b).
+\end{equation*}
+
+This is done by back-substituting through the steps of the Euclidean algorithm.
+
+\begin{example}
+Find integers $x, y$ such that $252x + 105y = \gcd(252, 105)$.
+
+\textbf{Solution.} From the previous example, we have:
+\begin{align*}
+    42 &= 252 - 2 \cdot 105, \\
+    21 &= 105 - 2 \cdot 42.
+\end{align*}
+Substitute the first into the second:
+\begin{align*}
+    21 &= 105 - 2 \cdot (252 - 2 \cdot 105) \\
+       &= 105 - 2 \cdot 252 + 4 \cdot 105 \\
+       &= (-2) \cdot 252 + 5 \cdot 105.
+\end{align*}
+Thus, $x = -2$, $y = 5$.
+\end{example}
+
+% Section 4: Solving Congruence Relations
+\section{Solving Congruence Relations}
+
+\subsection{Linear Congruences}
+
+\textbf{Definition (Linear Congruence).} A \textit{linear congruence} is a congruence of the form
+\begin{equation*}
+    ax \equiv b \pmod{n},
+\end{equation*}
+where $a, b \in \mathbb{Z}$ and $n \in \mathbb{Z}^+$ are given, and $x$ is an unknown integer.
+
+\textbf{Theorem (Existence of Solutions).} The linear congruence $ax \equiv b \pmod{n}$ has a solution if and only if $\gcd(a, n) \mid b$.
+
+\textbf{Theorem (Number of Solutions).} If $d = \gcd(a, n)$ and $d \mid b$, then the congruence $ax \equiv b \pmod{n}$ has exactly $d$ incongruent solutions modulo $n$.
+
+\subsection{Method of Solving}
+
+To solve $ax \equiv b \pmod{n}$ when $d = \gcd(a, n) \mid b$:
+
+\begin{enumerate}[label=\textbf{Step \arabic*:}]
+    \item Divide the entire congruence by $d$:
+    \begin{equation*}
+        \frac{a}{d} x \equiv \frac{b}{d} \pmod{\frac{n}{d}}.
+    \end{equation*}
+    Now $\gcd\!\left(\frac{a}{d}, \frac{n}{d}\right) = 1$, so $\frac{a}{d}$ has a multiplicative inverse modulo $\frac{n}{d}$.
+    \item Find the inverse $u$ such that $u \cdot \frac{a}{d} \equiv 1 \pmod{\frac{n}{d}}$ (using the Extended Euclidean Algorithm).
+    \item Multiply both sides by $u$ to isolate $x$:
+    \begin{equation*}
+        x \equiv u \cdot \frac{b}{d} \pmod{\frac{n}{d}}.
+    \end{equation*}
+    This gives one solution $x_0$ modulo $\frac{n}{d}$.
+    \item The $d$ solutions modulo $n$ are:
+    \begin{equation*}
+        x \equiv x_0 + k \cdot \frac{n}{d} \pmod{n}, \quad k = 0, 1, 2, \dots, d-1.
+    \end{equation*}
+\end{enumerate}
+
+\begin{example}
+Solve $14x \equiv 8 \pmod{22}$.
+
+\textbf{Solution.}
+\begin{enumerate}[label=--]
+    \item $\gcd(14, 22) = 2$, and $2 \mid 8$, so solutions exist.
+    \item Divide by $2$: $7x \equiv 4 \pmod{11}$.
+    \item Find the inverse of $7$ modulo $11$. Using the extended Euclidean algorithm or trial: $7 \cdot 8 = 56 \equiv 1 \pmod{11}$ (since $56 = 5 \cdot 11 + 1$). So the inverse is $8$.
+    \item Multiply: $x \equiv 8 \cdot 4 = 32 \equiv 10 \pmod{11}$.
+    \item The two solutions modulo $22$ are:
+    \begin{equation*}
+        x \equiv 10 \pmod{22}, \quad x \equiv 10 + 11 = 21 \pmod{22}.
+    \end{equation*}
+\end{enumerate}
+Check: $14 \cdot 10 = 140 = 6 \cdot 22 + 8 \equiv 8 \pmod{22}$, and $14 \cdot 21 = 294 = 13 \cdot 22 + 8 \equiv 8 \pmod{22}$.
+\end{example}
+
+% Section 5: Chinese Remainder Theorem
+\section{Chinese Remainder Theorem}
+
+\textbf{Theorem (Chinese Remainder Theorem, CRT).} Let $n_1, n_2, \dots, n_k$ be positive integers that are pairwise coprime (i.e., $\gcd(n_i, n_j) = 1$ for all $i \neq j$). Then the system of congruences
+\begin{align*}
+    x &\equiv a_1 \pmod{n_1}, \\
+    x &\equiv a_2 \pmod{n_2}, \\
+    &\;\;\vdots \\
+    x &\equiv a_k \pmod{n_k},
+\end{align*}
+has a unique solution modulo $N = n_1 n_2 \cdots n_k$. That is, there exists a unique $x$ with $0 \leq x < N$ satisfying all congruences simultaneously.
+
+\subsection{Constructive Method of Solution}
+
+Let $N = n_1 n_2 \cdots n_k$. For each $i = 1, \dots, k$:
+\begin{enumerate}[label=\textbf{Step \arabic*:}]
+    \item Compute $N_i = N / n_i$.
+    \item Find the modular inverse $M_i$ of $N_i$ modulo $n_i$ (i.e., $M_i N_i \equiv 1 \pmod{n_i}$).
+\end{enumerate}
+Then the solution is:
+\begin{equation*}
+    x \equiv a_1 M_1 N_1 + a_2 M_2 N_2 + \cdots + a_k M_k N_k \pmod{N}.
+\end{equation*}
+
+\begin{example}
+Solve the system:
+\begin{align*}
+    x &\equiv 2 \pmod{3}, \\
+    x &\equiv 3 \pmod{5}, \\
+    x &\equiv 2 \pmod{7}.
+\end{align*}
+
+\textbf{Solution.} Here $n_1 = 3$, $n_2 = 5$, $n_3 = 7$, which are pairwise coprime. $N = 3 \cdot 5 \cdot 7 = 105$.
+\begin{itemize}[label=--]
+    \item $N_1 = 105/3 = 35$. Inverse of $35$ mod $3$: $35 \equiv 2 \pmod{3}$, and $2 \cdot 2 = 4 \equiv 1 \pmod{3}$, so $M_1 = 2$.
+    \item $N_2 = 105/5 = 21$. Inverse of $21$ mod $5$: $21 \equiv 1 \pmod{5}$, so $M_2 = 1$.
+    \item $N_3 = 105/7 = 15$. Inverse of $15$ mod $7$: $15 \equiv 1 \pmod{7}$, so $M_3 = 1$.
+\end{itemize}
+Then:
+\begin{align*}
+    x &\equiv 2 \cdot 2 \cdot 35 + 3 \cdot 1 \cdot 21 + 2 \cdot 1 \cdot 15 \\
+      &= 140 + 63 + 30 = 233 \pmod{105}.
+\end{align*}
+Since $233 = 2 \cdot 105 + 23$, we have $x \equiv 23 \pmod{105}$.
+Check: $23 \equiv 2 \pmod{3}$, $23 \equiv 3 \pmod{5}$, $23 \equiv 2 \pmod{7}$.
+\end{example}
+
+\begin{example}
+Solve:
+\begin{align*}
+    x &\equiv 1 \pmod{4}, \\
+    x &\equiv 2 \pmod{9}.
+\end{align*}
+$N = 36$. $N_1 = 9$, inverse of $9$ mod $4$: $9 \equiv 1$, so $M_1 = 1$. $N_2 = 4$, inverse of $4$ mod $9$: $4 \cdot 7 = 28 \equiv 1$, so $M_2 = 7$. Then:
+\begin{equation*}
+    x \equiv 1 \cdot 1 \cdot 9 + 2 \cdot 7 \cdot 4 = 9 + 56 = 65 \equiv 29 \pmod{36}.
+\end{equation*}
+\end{example}
+
+% Section 6: Diophantine Equations
+\section{Diophantine Equations}
+
+\textbf{Definition (Diophantine Equation).} A \textit{Diophantine equation} is a polynomial equation in which only integer solutions are sought. In this section, we focus on \textit{linear Diophantine equations} in two variables.
+
+\textbf{Definition (Linear Diophantine Equation).} An equation of the form
+\begin{equation*}
+    ax + by = c,
+\end{equation*}
+where $a, b, c \in \mathbb{Z}$ are given, and $x, y \in \mathbb{Z}$ are unknowns.
+
+\subsection{Conditions for Solutions}
+
+\textbf{Theorem (Existence of Solutions).} The linear Diophantine equation $ax + by = c$ has integer solutions if and only if $\gcd(a, b) \mid c$.
+
+\textbf{Proof Sketch.} Let $d = \gcd(a, b)$. For any integers $x, y$, the left-hand side $ax + by$ is always a multiple of $d$. So $c$ must be a multiple of $d$ for solutions to exist. Conversely, if $d \mid c$, the extended Euclidean algorithm gives a particular solution.
+
+\subsection{Finding the General Solution}
+
+Suppose $d = \gcd(a, b) \mid c$. The method:
+\begin{enumerate}[label=\textbf{Step \arabic*:}]
+    \item Use the Extended Euclidean Algorithm to find one particular solution $(x_0, y_0)$ to $a x + b y = d$.
+    \item Multiply by $c/d$ to obtain a particular solution to $a x + b y = c$:
+    \begin{equation*}
+        x_p = \frac{c}{d} x_0, \quad y_p = \frac{c}{d} y_0.
+    \end{equation*}
+    \item The general solution is given by:
+    \begin{equation*}
+        \begin{cases}
+            x = x_p + \dfrac{b}{d} \cdot t, \\[12pt]
+            y = y_p - \dfrac{a}{d} \cdot t,
+        \end{cases}
+        \quad t \in \mathbb{Z}.
+    \end{equation*}
+\end{enumerate}
+
+\begin{example}
+Find all integer solutions to $14x + 22y = 50$.
+
+\textbf{Solution.}
+First, $\gcd(14, 22) = 2$, and $2 \mid 50$, so solutions exist.
+\begin{itemize}[label=--]
+    \item Find one solution to $14x + 22y = 2$ using the Extended Euclidean Algorithm.
+    \begin{align*}
+        22 &= 1 \cdot 14 + 8, \\
+        14 &= 1 \cdot 8 + 6, \\
+        8 &= 1 \cdot 6 + 2, \\
+        6 &= 3 \cdot 2 + 0.
+    \end{align*}
+    Back-substituting:
+    \begin{align*}
+        2 &= 8 - 1 \cdot 6, \\
+        6 &= 14 - 1 \cdot 8 \implies 2 = 8 - 1 \cdot (14 - 1 \cdot 8) = 2 \cdot 8 - 1 \cdot 14, \\
+        8 &= 22 - 1 \cdot 14 \implies 2 = 2 \cdot (22 - 1 \cdot 14) - 1 \cdot 14 = 2 \cdot 22 - 3 \cdot 14.
+    \end{align*}
+    So $(-3) \cdot 14 + 2 \cdot 22 = 2$. Thus $x_0 = -3$, $y_0 = 2$.
+    \item Multiply by $c/d = 50/2 = 25$: $x_p = 25 \cdot (-3) = -75$, $y_p = 25 \cdot 2 = 50$.
+    \item General solution:
+    \begin{equation*}
+        x = -75 + \frac{22}{2} t = -75 + 11t, \quad y = 50 - \frac{14}{2} t = 50 - 7t, \quad t \in \mathbb{Z}.
+    \end{equation*}
+\end{itemize}
+Check: $14(-75 + 11t) + 22(50 - 7t) = -1050 + 154t + 1100 - 154t = 50$.
+\end{example}
+
+\begin{example}
+Find all integer solutions to $6x + 9y = 21$.
+
+\textbf{Solution.}
+$\gcd(6, 9) = 3$, and $3 \mid 21$, so solutions exist. Divide the equation by $3$ to simplify: $2x + 3y = 7$. By inspection, a particular solution to $2x + 3y = 1$ is $(x_0, y_0) = (-1, 1)$, since $2(-1) + 3(1) = 1$. Multiply by $7$: $x_p = -7$, $y_p = 7$.
+General solution:
+\begin{equation*}
+    x = -7 + \frac{3}{1} t = -7 + 3t, \quad y = 7 - \frac{2}{1} t = 7 - 2t, \quad t \in \mathbb{Z}.
+\end{equation*}
+\end{example}
+
+\textbf{Remark.} Diophantine equations are named after the ancient Greek mathematician Diophantus of Alexandria. Linear Diophantine equations in two variables are completely solved by the method above. Higher-degree Diophantine equations (e.g., $x^2 + y^2 = z^2$, $x^n + y^n = z^n$) are much more challenging and have led to deep mathematical theories, including Fermat's Last Theorem.
+
+\end{document}

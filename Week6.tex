@@ -1,0 +1,315 @@
+\documentclass[11pt,a4paper]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tocloft}
+
+% Page style
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Lecture Notes: Principles of Counting}
+\fancyhead[R]{\small \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% Section formatting
+\titleformat{\section}{\Large\bfseries}{Section \thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{1em}{}
+
+% Adjust table of contents appearance
+\renewcommand{\cftsecfont}{\bfseries}
+\renewcommand{\cftsubsecfont}{\normalfont}
+
+\begin{document}
+
+% Title page
+\begin{titlepage}
+    \centering
+    \vspace*{4cm}
+    
+    {\Huge\bfseries Lecture Notes:\\ Principles of Counting\par}
+    \vspace{1cm}
+    {\Large Discrete Mathematics\par}
+    \vspace{2cm}
+    {\large \textbf{Author:} Bakdaulet Sotsial\par}
+    \vspace{1cm}
+    
+    \vfill
+    {\small Astana IT University \par}
+    \vspace*{2cm}
+\end{titlepage}
+
+% Table of contents
+\tableofcontents
+\newpage
+
+% Section 1: Basic Counting Principles
+\section{Basic Counting Principles}
+
+\subsection{Introduction to Counting}
+
+Counting is one of the most fundamental activities in mathematics and computer science. Combinatorics, the branch of mathematics concerned with counting, provides powerful techniques for determining the number of elements in a finite set without explicitly listing them. These techniques are essential for probability, algorithm analysis, cryptography, and many other fields.
+
+The two most basic counting principles are the \textbf{Sum Rule} (also known as the Addition Principle) and the \textbf{Product Rule} (also known as the Multiplication Principle). All other counting methods can be derived from these two foundational ideas.
+
+\subsection{The Sum Rule (Addition Principle)}
+
+\textbf{Theorem (The Sum Rule).} If a task can be performed in one of $m$ ways, and another task can be performed in one of $n$ ways, and the two tasks cannot be performed simultaneously (they are disjoint), then performing \textit{either} the first task \textit{or} the second task can be done in $m + n$ ways.
+
+More formally: If $A$ and $B$ are disjoint finite sets (i.e., $A \cap B = \emptyset$), then
+\begin{equation*}
+    |A \cup B| = |A| + |B|.
+\end{equation*}
+
+\textbf{Intuition:} When choices are mutually exclusive (you may do one thing OR another, but not both), you \textit{add} the number of ways.
+
+\begin{example}
+A student must choose one elective course. The Mathematics department offers $4$ eligible courses, and the Computer Science department offers $5$ eligible courses. No course is offered by both departments. How many ways can the student choose an elective?
+
+\textbf{Solution.} Since choosing a Math course and choosing a CS course are disjoint possibilities, by the Sum Rule, the total number of choices is $4 + 5 = 9$.
+\end{example}
+
+\begin{example}
+In a class, there are $12$ male students and $15$ female students. How many ways are there to choose a class representative?
+
+\textbf{Solution.} The representative can be either male or female (disjoint sets). Total ways: $12 + 15 = 27$.
+\end{example}
+
+\textbf{Remark.} The Sum Rule can be extended to any finite number of pairwise disjoint sets:
+\begin{equation*}
+    |A_1 \cup A_2 \cup \cdots \cup A_n| = |A_1| + |A_2| + \cdots + |A_n|.
+\end{equation*}
+If the sets are not disjoint, we must use the Principle of Inclusion-Exclusion (Section 3).
+
+\subsection{The Product Rule (Multiplication Principle)}
+
+\textbf{Theorem (The Product Rule).} If a task can be broken down into two sequential subtasks, where the first subtask can be performed in $m$ ways and the second subtask can be performed in $n$ ways for \textit{each} way the first subtask is performed, then the entire task can be performed in $m \times n$ ways.
+
+More formally: If $A$ and $B$ are finite sets, then
+\begin{equation*}
+    |A \times B| = |A| \times |B|.
+\end{equation*}
+
+\textbf{Intuition:} When choices are made in sequence (you do one thing AND then another), you \textit{multiply} the number of ways.
+
+\begin{example}
+A password consists of one letter (from the 26 letters of the English alphabet) followed by one digit (from 0 to 9). How many different passwords are possible?
+
+\textbf{Solution.}
+\begin{itemize}[label=--]
+    \item Step 1 (choose a letter): 26 ways.
+    \item Step 2 (choose a digit): 10 ways.
+\end{itemize}
+By the Product Rule, total passwords: $26 \times 10 = 260$.
+\end{example}
+
+\begin{example}
+A restaurant offers $3$ appetizers, $5$ main courses, and $2$ desserts. A meal consists of one appetizer, one main course, and one dessert. How many different meals are possible?
+
+\textbf{Solution.}
+\begin{itemize}[label=--]
+    \item Appetizer: 3 choices.
+    \item Main course: 5 choices.
+    \item Dessert: 2 choices.
+\end{itemize}
+Total meals: $3 \times 5 \times 2 = 30$.
+\end{example}
+
+\begin{example}
+How many different license plates can be made if each plate contains three letters followed by three digits? (Assume 26 letters and 10 digits, and repetition is allowed.)
+
+\textbf{Solution.}
+\begin{itemize}[label=--]
+    \item First letter: 26 choices. Second letter: 26 choices. Third letter: 26 choices.
+    \item First digit: 10 choices. Second digit: 10 choices. Third digit: 10 choices.
+\end{itemize}
+Total: $26^3 \times 10^3 = 17576 \times 1000 = 17{,}576{,}000$.
+\end{example}
+
+\textbf{Remark.} The Product Rule extends to any finite number of sequential steps. The key requirement is that the number of ways to perform each later step is independent of the choices made in earlier steps (or we must adjust the count accordingly).
+
+\subsection{Combining the Sum and Product Rules}
+
+Many counting problems require a combination of both rules. The general strategy is to break the problem into disjoint cases (using the Sum Rule), and within each case, break the task into sequential steps (using the Product Rule).
+
+\begin{example}
+A password must be either $2$ letters followed by $1$ digit, or $1$ letter followed by $2$ digits. How many passwords are possible?
+
+\textbf{Solution.} There are two disjoint types:
+\begin{itemize}[label=--]
+    \item \textbf{Type 1:} Two letters then one digit. Ways: $26 \times 26 \times 10 = 6760$.
+    \item \textbf{Type 2:} One letter then two digits. Ways: $26 \times 10 \times 10 = 2600$.
+\end{itemize}
+These are mutually exclusive patterns. By the Sum Rule, total: $6760 + 2600 = 9360$.
+\end{example}
+
+% Section 2: The Pigeonhole Principle
+\section{The Pigeonhole Principle}
+
+\subsection{Basic Pigeonhole Principle}
+
+\textbf{Theorem (The Pigeonhole Principle).} If $n$ items are placed into $m$ containers and $n > m$, then at least one container must contain at least two items.
+
+\textbf{Intuition:} If you have more pigeons than pigeonholes, at least one hole must accommodate more than one pigeon. This deceptively simple observation has surprisingly powerful consequences.
+
+\begin{example}
+In any group of $13$ people, at least two people have their birthday in the same month.
+
+\textbf{Solution.} There are $12$ months (containers) and $13$ people (items). Since $13 > 12$, by the Pigeonhole Principle, at least two people share a birth month.
+\end{example}
+
+\begin{example}
+If you pick $5$ cards from a standard deck of $52$ cards, must you have at least two cards of the same suit?
+
+\textbf{Solution.} There are $4$ suits, and you pick $5$ cards. Since $5 > 4$, by the Pigeonhole Principle, at least two cards must be of the same suit. (Indeed, you could have a maximum of one card per suit only if you pick $4$ or fewer cards.)
+\end{example}
+
+\begin{example}
+In any set of $27$ English words, at least two must start with the same letter.
+
+\textbf{Solution.} There are $26$ letters in the English alphabet. With $27$ words, $27 > 26$, so by the Pigeonhole Principle, at least two words share the same initial letter.
+\end{example}
+
+\subsection{Generalized Pigeonhole Principle}
+
+\textbf{Theorem (Generalized Pigeonhole Principle).} If $N$ items are placed into $k$ containers, then there is at least one container containing at least
+\begin{equation*}
+    \left\lceil \frac{N}{k} \right\rceil
+\end{equation*}
+items, where $\lceil x \rceil$ is the ceiling function (the smallest integer $\geq x$).
+
+\textbf{Proof.} By contradiction: suppose every container contains at most $\lceil N/k \rceil - 1$ items. Then the total number of items is at most $k(\lceil N/k \rceil - 1) < k \cdot (N/k) = N$, a contradiction.
+
+\begin{example}
+In a university of $10{,}000$ students, what is the minimum number of students that must share a birthday (month and day, ignoring year)?
+
+\textbf{Solution.} There are $366$ possible birthdates (including February 29). By the Generalized Pigeonhole Principle, at least
+\begin{equation*}
+    \left\lceil \frac{10{,}000}{366} \right\rceil = \lceil 27.32\dots \rceil = 28
+\end{equation*}
+students share the same birthdate.
+\end{example}
+
+\begin{example}
+A bag contains $100$ marbles colored red, blue, green, and yellow. What is the minimum number of marbles of the most frequent color?
+
+\textbf{Solution.} Here $N = 100$, $k = 4$. By the Generalized Pigeonhole Principle, at least
+\begin{equation*}
+    \left\lceil \frac{100}{4} \right\rceil = 25
+\end{equation*}
+marbles are of the same color.
+\end{example}
+
+\begin{example}
+How many students must be in a class to guarantee that at least $6$ students receive the same letter grade (A, B, C, D, or F)?
+
+\textbf{Solution.} We need the smallest $N$ such that $\lceil N/5 \rceil \geq 6$. This is equivalent to $N/5 > 5$, i.e., $N > 25$. So $N = 26$. With $25$ students, each grade could have exactly $5$ students. With $26$, at least one grade must have $6$ students.
+\end{example}
+
+\textbf{Remark.} The Pigeonhole Principle is an \textit{existence} theorem: it guarantees that a certain configuration must occur, but it does not specify \textit{which} container has the extra items. Despite its simplicity, it is a cornerstone of combinatorial reasoning.
+
+% Section 3: Principle of Inclusion-Exclusion
+\section{Principle of Inclusion-Exclusion}
+
+\subsection{Motivation}
+
+The Sum Rule gives $|A \cup B| = |A| + |B|$ only when $A$ and $B$ are disjoint. When sets overlap, simply adding their sizes overcounts the elements in their intersection. The \textbf{Principle of Inclusion-Exclusion} (PIE) provides the correct formula by alternately adding and subtracting the sizes of intersections.
+
+\subsection{Formula for Two Sets}
+
+\textbf{Theorem (PIE for Two Sets).} For any finite sets $A$ and $B$,
+\begin{equation*}
+    |A \cup B| = |A| + |B| - |A \cap B|.
+\end{equation*}
+
+\textbf{Intuition:} When we add $|A|$ and $|B|$, elements in $A \cap B$ are counted twice, so we subtract one copy.
+
+\begin{example}
+In a survey of $100$ students, $60$ study Mathematics, $45$ study Physics, and $15$ study both. How many students study at least one of these subjects?
+
+\textbf{Solution.}
+Let $M$ = Mathematics, $P$ = Physics.
+\begin{equation*}
+    |M \cup P| = |M| + |P| - |M \cap P| = 60 + 45 - 15 = 90.
+\end{equation*}
+Thus, $90$ students study at least one subject. (The remaining $10$ students study neither.)
+\end{example}
+
+\subsection{Formula for Three Sets}
+
+\textbf{Theorem (PIE for Three Sets).} For any finite sets $A$, $B$, and $C$,
+\begin{align*}
+    |A \cup B \cup C| &= |A| + |B| + |C| \\
+    &\quad - |A \cap B| - |A \cap C| - |B \cap C| \\
+    &\quad + |A \cap B \cap C|.
+\end{align*}
+
+\textbf{Intuition:} Add all individual sizes, subtract all pairwise intersections (since they were double-counted), then add back the triple intersection (which was subtracted too many times).
+
+\begin{example}
+Among $200$ people, $120$ speak English, $80$ speak French, $60$ speak German; $30$ speak English and French, $25$ speak English and German, $20$ speak French and German; and $10$ speak all three languages. How many people speak at least one of these languages?
+
+\textbf{Solution.} Let $E, F, G$ denote the sets of English, French, and German speakers, respectively.
+\begin{align*}
+    |E \cup F \cup G| &= |E| + |F| + |G| \\
+    &\quad - |E \cap F| - |E \cap G| - |F \cap G| \\
+    &\quad + |E \cap F \cap G| \\
+    &= 120 + 80 + 60 - 30 - 25 - 20 + 10 \\
+    &= 260 - 75 + 10 = 195.
+\end{align*}
+Thus, $195$ people speak at least one language. The remaining $5$ speak none of these three.
+\end{example}
+
+\subsection{General Formula (Brief)}
+
+\textbf{Theorem (General Principle of Inclusion-Exclusion).} For any finite sets $A_1, A_2, \dots, A_n$,
+\begin{align*}
+    \left| \bigcup_{i=1}^{n} A_i \right| &= \sum_{i=1}^{n} |A_i| - \sum_{1 \leq i < j \leq n} |A_i \cap A_j| + \sum_{1 \leq i < j < k \leq n} |A_i \cap A_j \cap A_k| \\
+    &\quad - \cdots + (-1)^{n+1} |A_1 \cap A_2 \cap \cdots \cap A_n|.
+\end{align*}
+
+In words: take the sum of individual sizes, subtract the sum of all pairwise intersections, add the sum of all triple intersections, subtract quadruple intersections, and so on, alternating signs.
+
+\begin{example}
+How many positive integers from $1$ to $100$ are divisible by either $2$, $3$, or $5$?
+
+\textbf{Solution.} Let $A_2$ = multiples of $2$, $A_3$ = multiples of $3$, $A_5$ = multiples of $5$.
+\begin{align*}
+    |A_2| &= \lfloor 100/2 \rfloor = 50, \\
+    |A_3| &= \lfloor 100/3 \rfloor = 33, \\
+    |A_5| &= \lfloor 100/5 \rfloor = 20.
+\end{align*}
+Pairwise intersections:
+\begin{align*}
+    |A_2 \cap A_3| &= \lfloor 100/6 \rfloor = 16, \quad (\text{lcm}(2,3)=6) \\
+    |A_2 \cap A_5| &= \lfloor 100/10 \rfloor = 10, \quad (\text{lcm}(2,5)=10) \\
+    |A_3 \cap A_5| &= \lfloor 100/15 \rfloor = 6, \quad (\text{lcm}(3,5)=15).
+\end{align*}
+Triple intersection:
+\begin{equation*}
+    |A_2 \cap A_3 \cap A_5| = \lfloor 100/(2\cdot 3\cdot 5) \rfloor = \lfloor 100/30 \rfloor = 3.
+\end{equation*}
+By PIE:
+\begin{align*}
+    |A_2 \cup A_3 \cup A_5| &= 50 + 33 + 20 - 16 - 10 - 6 + 3 = 74.
+\end{align*}
+Thus, $74$ numbers from $1$ to $100$ are divisible by $2$, $3$, or $5$.
+\end{example}
+
+\begin{example}[Counting Derangements — Brief Mention]
+A classic application of PIE is counting \textit{derangements} — permutations of $n$ elements where no element appears in its original position. The number of derangements $D_n$ is:
+\begin{equation*}
+    D_n = n! \left(1 - \frac{1}{1!} + \frac{1}{2!} - \frac{1}{3!} + \cdots + (-1)^n \frac{1}{n!}\right).
+\end{equation*}
+For $n = 4$, $D_4 = 24(1 - 1 + 1/2 - 1/6 + 1/24) = 24(12/24 - 4/24 + 1/24) = 24(9/24) = 9$.
+\end{example}
+
+\textbf{Remark.} The Principle of Inclusion-Exclusion is a versatile tool that extends far beyond simple counting. It appears in probability (union of events), number theory (counting integers with given properties), and many proof techniques. The alternating sum structure reflects a deep combinatorial formula that corrects for overcounting at each level of intersection.
+
+\end{document}
