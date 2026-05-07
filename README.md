@@ -29,7 +29,7 @@ My lecture notes for a 10-week Discrete Mathematics course. Written in LaTeX, co
 ## Compiling
 
 ```bash
-pdflatex main.tex
+pdflatex Week1.tex
 ```
 
 Or just grab the PDFs directly.
