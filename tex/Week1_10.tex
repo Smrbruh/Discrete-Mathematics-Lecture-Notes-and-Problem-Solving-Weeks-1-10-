@@ -1,0 +1,958 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage[hidelinks,colorlinks=true,linkcolor=blue]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{multicol}
+
+%% ── Page style ──────────────────────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textit{Discrete Mathematics}}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+%% ── Theorem environments ────────────────────────────────────────────────────
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}[definition]{Example}
+\newtheorem{theorem}[definition]{Theorem}
+\newenvironment{practice}{\paragraph*{\textbf{Practice:}}}{}
+
+%% ── tcolorbox style ─────────────────────────────────────────────────────────
+\tcbset{
+  keybox/.style={
+    colback=blue!5!white, colframe=blue!60!black,
+    fonttitle=\bfseries, boxrule=0.6pt, arc=3pt,
+    title=#1, left=4pt, right=4pt, top=3pt, bottom=3pt
+  },
+  notebox/.style={
+    colback=orange!8!white, colframe=orange!70!black,
+    boxrule=0.5pt, arc=3pt, left=4pt, right=4pt, top=2pt, bottom=2pt
+  }
+}
+
+%% ── Listings style ──────────────────────────────────────────────────────────
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\bfseries,
+  commentstyle=\itshape\color{gray},
+  frame=single, framerule=0.4pt,
+  xleftmargin=8pt, xrightmargin=8pt,
+  captionpos=b, breaklines=true,
+  numbers=left, numberstyle=\tiny\color{gray}, numbersep=6pt
+}
+
+%% ── Convenience macros ──────────────────────────────────────────────────────
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\divides}{\mid}
+\newcommand{\ndivides}{\nmid}
+\newcommand{\lra}{\leftrightarrow}
+\newcommand{\ra}{\rightarrow}
+
+%% ═══════════════════════════════════════════════════════════════════════════
+\begin{document}
+
+\title{\textbf{Discrete Mathematics}\\[4pt]
+  \large A Concise 10-Week Course}
+\author{}
+\date{}
+\maketitle
+\thispagestyle{empty}
+
+\begin{center}
+\textit{Prerequisites: Calculus I–II, Linear Algebra.\\
+Style: direct, no fluff — definitions, examples, practice.}
+\end{center}
+
+\vspace{6pt}
+\tableofcontents
+\newpage
+
+%% ═══════════════════════════════════════════════════════════════════════════
+%%  WEEK 1 — PROPOSITIONAL LOGIC
+%% ═══════════════════════════════════════════════════════════════════════════
+\section{Week 1: Propositional Logic}
+\setcounter{definition}{0}
+
+\subsection*{1.1 Propositions and Connectives}
+
+A \textbf{proposition} is a statement that is either true (T) or false (F).
+
+\begin{tcolorbox}[keybox={Core connectives}]
+\begin{tabular}{@{}lll@{}}
+$\neg p$ & negation & NOT $p$\\
+$p \land q$ & conjunction & $p$ AND $q$\\
+$p \lor q$ & disjunction & $p$ OR $q$\\
+$p \ra q$ & implication & if $p$ then $q$\\
+$p \lra q$ & biconditional & $p$ iff $q$\\
+\end{tabular}
+\end{tcolorbox}
+
+\subsection*{1.2 Truth Tables}
+
+\begin{center}
+\begin{tabular}{cc|ccccc}
+\toprule
+$p$ & $q$ & $\neg p$ & $p\land q$ & $p\lor q$ & $p\ra q$ & $p\lra q$\\
+\midrule
+T & T & F & T & T & T & T\\
+T & F & F & F & T & F & F\\
+F & T & T & F & T & T & F\\
+F & F & T & F & F & T & T\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Key facts:
+\begin{itemize}[nosep]
+  \item $p\ra q \equiv \neg p\lor q$ (implication as disjunction).
+  \item $p\ra q \equiv \neg q\ra\neg p$ (contrapositive — always equivalent).
+  \item $p\lra q\equiv (p\ra q)\land(q\ra p)$.
+\end{itemize}
+
+\subsection*{1.3 Logical Equivalences}
+
+\begin{tcolorbox}[keybox={Key equivalences}]
+\begin{align*}
+\neg(\neg p)&\equiv p & &\text{Double negation}\\
+p\land q &\equiv q\land p,\quad p\lor q\equiv q\lor p & &\text{Commutativity}\\
+\neg(p\land q)&\equiv \neg p\lor\neg q & &\text{De Morgan 1}\\
+\neg(p\lor q)&\equiv \neg p\land\neg q & &\text{De Morgan 2}\\
+p\land(q\lor r)&\equiv (p\land q)\lor(p\land r) & &\text{Distributivity}\\
+p\lor(q\land r)&\equiv (p\lor q)\land(p\lor r) & &\text{Distributivity}\\
+p\land\mathbf{T}&\equiv p,\quad p\lor\mathbf{F}\equiv p & &\text{Identity}\\
+p\land\mathbf{F}&\equiv\mathbf{F},\quad p\lor\mathbf{T}\equiv\mathbf{T} & &\text{Domination}\\
+\end{align*}
+\end{tcolorbox}
+
+\begin{example}
+Show $p\ra q\equiv\neg p\lor q$.\\
+Truth table: when $p$=T, $q$=F — both give F; all other rows agree. \checkmark
+\end{example}
+
+\subsection*{1.4 Disjunctive Normal Form (DNF)}
+
+A formula is in \textbf{DNF} if it is a disjunction of conjunctions of literals (a literal is $p$ or $\neg p$).
+
+\textbf{Algorithm (truth-table method):}
+\begin{lstlisting}[caption={DNF conversion algorithm}]
+Input:  formula F with variables p1,...,pn
+Output: equivalent DNF
+
+1. Build full truth table for F.
+2. For each row where F = TRUE:
+   a. Form a minterm: conjoin each variable
+      as pi if its value is T, else neg(pi).
+3. DNF = disjunction of all minterms.
+\end{lstlisting}
+
+\begin{example}
+Find DNF of $p\ra q$.
+Truth table rows where result is T: (T,T), (F,T), (F,F).\\
+Minterms: $(p\land q)$, $(\neg p\land q)$, $(\neg p\land\neg q)$.\\
+DNF: $(p\land q)\lor(\neg p\land q)\lor(\neg p\land\neg q)$.\\
+Simplified (optional): $\neg p\lor q\equiv p\ra q$. \checkmark
+\end{example}
+
+\subsection*{1.5 Applications}
+
+\begin{itemize}[nosep]
+  \item \textbf{Logic circuits}: AND/OR/NOT gates implement $\land,\lor,\neg$.
+  \item \textbf{Search queries}: ``AI AND (NOT robot)'' uses propositional logic.
+\end{itemize}
+
+\begin{practice}
+\begin{enumerate}[nosep,label=\arabic*.]
+  \item Build a truth table for $(p\ra q)\land(\neg p\ra r)$.
+  \item Prove $p\lor(p\land q)\equiv p$ (absorption) using equivalences.
+  \item Convert $\neg(p\ra q)$ to DNF.
+  \item Show that $p\lra q\equiv(p\land q)\lor(\neg p\land\neg q)$.
+  \item Is $((p\ra q)\land(q\ra r))\ra(p\ra r)$ a tautology?
+\end{enumerate}
+\end{practice}
+
+\newpage
+%% ═══════════════════════════════════════════════════════════════════════════
+%%  WEEK 2 — SETS AND RELATIONS
+%% ═══════════════════════════════════════════════════════════════════════════
+\section{Week 2: Sets and Relations}
+\setcounter{definition}{0}
+
+\subsection*{2.1 Set Operations}
+
+\begin{tcolorbox}[keybox={Core operations}]
+\begin{tabular}{@{}lll@{}}
+$A\cup B$ & union & all elements in $A$ or $B$\\
+$A\cap B$ & intersection & elements in both\\
+$A\setminus B$ & difference & in $A$ but not $B$\\
+$\bar{A}$ (or $A^c$) & complement & $U\setminus A$\\
+$\mathcal{P}(A)$ & power set & all subsets of $A$\\
+\end{tabular}
+\end{tcolorbox}
+
+Key facts: $|\mathcal{P}(A)|=2^{|A|}$. \quad $A\cap\emptyset=\emptyset$. \quad $A\cup\emptyset=A$.
+
+De Morgan for sets: $\overline{A\cup B}=\bar{A}\cap\bar{B}$; \quad $\overline{A\cap B}=\bar{A}\cup\bar{B}$.
+
+\subsection*{2.2 Binary Relations}
+
+\begin{definition}
+A \textbf{binary relation} $R$ on $A$ is a subset $R\subseteq A\times A$. Write $aRb$ iff $(a,b)\in R$.
+\end{definition}
+
+\begin{tcolorbox}[keybox={Properties}]
+\begin{tabular}{@{}ll@{}}
+\textbf{Reflexive}     & $\forall a:\ aRa$\\
+\textbf{Symmetric}     & $aRb\Rightarrow bRa$\\
+\textbf{Antisymmetric} & $aRb\land bRa\Rightarrow a=b$\\
+\textbf{Transitive}    & $aRb\land bRc\Rightarrow aRc$\\
+\end{tabular}
+\end{tcolorbox}
+
+\begin{example}
+On $\Z$: $aRb\Leftrightarrow a\le b$ is reflexive, antisymmetric, transitive (not symmetric). $aRb\Leftrightarrow a\equiv b\pmod n$ is reflexive, symmetric, transitive.
+\end{example}
+
+\subsection*{2.3 Equivalence Relations}
+
+An \textbf{equivalence relation} is reflexive + symmetric + transitive.
+
+\begin{itemize}[nosep]
+  \item The \textbf{equivalence class} of $a$: $[a]=\{b\in A\mid aRb\}$.
+  \item Classes form a \textbf{partition} of $A$ (disjoint, cover $A$).
+\end{itemize}
+
+\begin{example}
+$\Z_n = \{[0],[1],\ldots,[n-1]\}$ under $\equiv\pmod n$ partitions $\Z$ into $n$ classes.
+\end{example}
+
+\subsection*{2.4 Partial Orders and Hasse Diagrams}
+
+A \textbf{partial order} is reflexive, antisymmetric, transitive. Notation: $(A,\preceq)$.\\
+A \textbf{total order}: additionally $\forall a,b$: $a\preceq b$ or $b\preceq a$.
+
+\textbf{Hasse diagram}: draw $a$ below $b$ if $a\prec b$ and no $c$ satisfies $a\prec c\prec b$; omit self-loops and transitive edges.
+
+\begin{example}
+Divisibility on $\{1,2,3,6\}$: $1\divides 2$, $1\divides 3$, $1\divides 6$, $2\divides 6$, $3\divides 6$.\\
+Hasse diagram has $6$ at top, $2$ and $3$ in middle, $1$ at bottom.
+\end{example}
+
+\begin{practice}
+\begin{enumerate}[nosep,label=\arabic*.]
+  \item Prove $A\setminus(B\cap C)=(A\setminus B)\cup(A\setminus C)$.
+  \item Is ``$x$ is a sibling of $y$'' an equivalence relation on people?
+  \item List all equivalence classes of $\equiv\pmod 4$ on $\{0,1,\ldots,11\}$.
+  \item Draw the Hasse diagram for divisibility on $\{1,2,4,8\}$.
+  \item How many relations on $\{1,2,3\}$ are both symmetric and reflexive?
+\end{enumerate}
+\end{practice}
+
+\newpage
+%% ═══════════════════════════════════════════════════════════════════════════
+%%  WEEK 3 — FUNCTIONS
+%% ═══════════════════════════════════════════════════════════════════════════
+\section{Week 3: Functions and Cardinality}
+\setcounter{definition}{0}
+
+\subsection*{3.1 Types of Functions}
+
+\begin{tcolorbox}[keybox={Injective / Surjective / Bijective}]
+Let $f:A\to B$.
+\begin{itemize}[nosep]
+  \item \textbf{Injective} (one-to-one): $f(a_1)=f(a_2)\Rightarrow a_1=a_2$.
+  \item \textbf{Surjective} (onto): $\forall b\in B,\;\exists a\in A: f(a)=b$.
+  \item \textbf{Bijective}: injective AND surjective.
+\end{itemize}
+\end{tcolorbox}
+
+\begin{example}
+$f:\R\to\R,\;f(x)=x^2$: neither (not injective: $f(1)=f(-1)$; not surjective: $-1$ unreached).\\
+$f:\R\to\R,\;f(x)=2x+1$: bijective.\\
+$f:\Z\to\Z,\;f(n)=n+1$: bijective.
+\end{example}
+
+\subsection*{3.2 Inverse and Composition}
+
+\begin{itemize}[nosep]
+  \item $f^{-1}$ exists $\Leftrightarrow$ $f$ is bijective.
+  \item \textbf{Composition}: $(g\circ f)(a)=g(f(a))$.
+  \item If $f:A\to B$ and $g:B\to C$ are both bijective, so is $g\circ f$.
+\end{itemize}
+
+\subsection*{3.3 Cardinality}
+
+\begin{definition}
+$|A|=|B|$ if there exists a bijection $f:A\to B$.
+\end{definition}
+
+\begin{tcolorbox}[keybox={Cardinality facts}]
+\begin{itemize}[nosep]
+  \item $|\N|=|\Z|=|\mathbb{Q}|$ — all \textbf{countably infinite} ($\aleph_0$).
+  \item $|\R|>|\N|$ — $\R$ is \textbf{uncountable}.
+  \item $\mathcal{P}(A)$ always has $|{\mathcal{P}(A)}|>|A|$ (Cantor's theorem).
+\end{itemize}
+\end{tcolorbox}
+
+\textbf{Cantor's diagonal argument (sketch):} Suppose $\R$ is countable; list all reals in $[0,1]$ as $r_1,r_2,\ldots$. Construct $d$ with $d_i\ne (r_i)_i$ at each decimal digit. Then $d$ differs from every $r_i$ — contradiction. Hence $|\R|>\aleph_0$.
+
+\begin{example}
+$|\N|=|\Z|$: use bijection $f(n)=n/2$ if $n$ even, $f(n)=-(n+1)/2$ if $n$ odd.\\
+Listing: $0,1,-1,2,-2,3,-3,\ldots$
+\end{example}
+
+\begin{practice}
+\begin{enumerate}[nosep,label=\arabic*.]
+  \item Is $f:\N\to\N, f(n)=n+1$ injective? Surjective?
+  \item Let $f(x)=3x-1$ and $g(x)=x^2$. Find $(f\circ g)(2)$ and $(g\circ f)(2)$.
+  \item Prove $|\{0,1\}^*|=|\N|$ (all binary strings are countable).
+  \item Show $|\mathcal{P}(\{1,2,3,4\})|=16$.
+  \item Let $f:A\to B$ be injective and $g:B\to C$ surjective. Is $g\circ f$ necessarily surjective?
+\end{enumerate}
+\end{practice}
+
+\newpage
+%% ═══════════════════════════════════════════════════════════════════════════
+%%  WEEK 4 — INTEGERS AND NUMBER THEORY
+%% ═══════════════════════════════════════════════════════════════════════════
+\section{Week 4: Integers and Number Theory}
+\setcounter{definition}{0}
+
+\subsection*{4.1 Divisibility and Primes}
+
+\begin{definition}
+$a\divides b$ (``$a$ divides $b$'') iff $\exists k\in\Z: b=ka$.
+\end{definition}
+
+\begin{theorem}[Infinitely many primes — Euclid]
+Suppose finitely many primes $p_1,\ldots,p_k$. Let $N=p_1\cdots p_k+1$. No $p_i$ divides $N$ (remainder 1), so $N$ has a prime factor not in the list — contradiction.
+\end{theorem}
+
+\subsection*{4.2 Euclidean Algorithm}
+
+$\gcd(a,b)=\gcd(b,a\bmod b)$; base case $\gcd(a,0)=a$.
+
+\begin{lstlisting}[caption={Euclidean / Extended Euclidean algorithm}]
+gcd(a, b):
+  while b != 0:
+    a, b = b, a mod b
+  return a   // gcd
+
+extended_gcd(a, b):  // returns (g, x, y) s.t. ax+by=g
+  if b == 0: return (a, 1, 0)
+  (g, x1, y1) = extended_gcd(b, a mod b)
+  return (g, y1, x1 - (a div b)*y1)
+\end{lstlisting}
+
+\begin{example}
+$\gcd(48,18)$: $48=2\cdot18+12$; $18=1\cdot12+6$; $12=2\cdot6+0$. So $\gcd=6$.\\
+Extended: $6=18-1\cdot12=18-1\cdot(48-2\cdot18)=3\cdot18-1\cdot48$. So $x=-1,y=3$.
+\end{example}
+
+\subsection*{4.3 Modular Arithmetic}
+
+$a\equiv b\pmod m\Leftrightarrow m\divides(a-b)$.
+
+\begin{tcolorbox}[keybox={Arithmetic mod $m$}]
+$(a+b)\bmod m=((a\bmod m)+(b\bmod m))\bmod m$; same for $\times$.\\
+Modular inverse of $a$: $a^{-1}$ s.t. $a\cdot a^{-1}\equiv 1\pmod m$; exists iff $\gcd(a,m)=1$.
+\end{tcolorbox}
+
+\subsection*{4.4 Linear Congruences}
+
+$ax\equiv b\pmod m$ has a solution iff $d=\gcd(a,m)\divides b$.\\
+If so, there are exactly $d$ solutions mod $m$. Divide through by $d$; use extended GCD.
+
+\begin{example}
+$6x\equiv 4\pmod{14}$. $d=\gcd(6,14)=2$, $2\divides 4$ ✓. Divide: $3x\equiv 2\pmod 7$.\\
+$3^{-1}\pmod 7$: $3\cdot5=15\equiv1$, so $x\equiv 5\cdot2=10\equiv 3\pmod 7$.\\
+Solutions mod 14: $x=3$ and $x=3+7=10$.
+\end{example}
+
+\subsection*{4.5 Chinese Remainder Theorem (CRT)}
+
+\begin{theorem}[CRT — two moduli]
+If $\gcd(m_1,m_2)=1$, the system
+$x\equiv a_1\pmod{m_1}$,\; $x\equiv a_2\pmod{m_2}$
+has a unique solution mod $m_1 m_2$.
+\end{theorem}
+
+\textbf{Construction:} $M=m_1 m_2$, $M_1=m_2$, $M_2=m_1$. Find $y_i=M_i^{-1}\pmod{m_i}$.\\
+Solution: $x\equiv a_1 M_1 y_1 + a_2 M_2 y_2\pmod{M}$.
+
+\begin{example}
+$x\equiv2\pmod3$, $x\equiv3\pmod5$. $M=15$, $M_1=5,M_2=3$.\\
+$5y_1\equiv1\pmod3\Rightarrow 2y_1\equiv1\Rightarrow y_1=2$.\\
+$3y_2\equiv1\pmod5\Rightarrow y_2=2$.\\
+$x\equiv2\cdot5\cdot2+3\cdot3\cdot2=20+18=38\equiv8\pmod{15}$.
+\end{example}
+
+\subsection*{4.6 Linear Diophantine Equations}
+
+$ax+by=c$ has integer solutions iff $\gcd(a,b)\divides c$. Find one solution via extended GCD; general solution: $x=x_0+\frac{b}{d}t$, $y=y_0-\frac{a}{d}t$, $t\in\Z$.
+
+\begin{practice}
+\begin{enumerate}[nosep,label=\arabic*.]
+  \item Compute $\gcd(252,105)$ using the Euclidean algorithm.
+  \item Solve $7x\equiv1\pmod{11}$ (find modular inverse).
+  \item Solve $15x\equiv9\pmod{25}$.
+  \item Solve the system: $x\equiv3\pmod4$, $x\equiv5\pmod7$ using CRT.
+  \item Solve the Diophantine equation $12x+9y=21$.
+\end{enumerate}
+\end{practice}
+
+\newpage
+%% ═══════════════════════════════════════════════════════════════════════════
+%%  WEEK 5 — INDUCTION AND RECURSION
+%% ═══════════════════════════════════════════════════════════════════════════
+\section{Week 5: Induction and Recursion}
+\setcounter{definition}{0}
+
+\subsection*{5.1 Mathematical Induction Templates}
+
+\begin{tcolorbox}[keybox={Ordinary induction}]
+To prove $P(n)$ for all $n\ge n_0$:
+\begin{enumerate}[nosep,label=\arabic*.]
+  \item \textbf{Base}: prove $P(n_0)$.
+  \item \textbf{Step}: assume $P(k)$ (inductive hypothesis); prove $P(k+1)$.
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{tcolorbox}[keybox={Strong induction}]
+Step: assume $P(n_0),P(n_0+1),\ldots,P(k)$; prove $P(k+1)$.\\
+Use when $P(k+1)$ depends on earlier terms, not just $P(k)$.
+\end{tcolorbox}
+
+\begin{example}
+Prove $\displaystyle\sum_{i=1}^n i=\frac{n(n+1)}{2}$.\\
+Base ($n=1$): $1=1(2)/2$ ✓. Step: assume true for $k$. Then
+$\sum_{i=1}^{k+1}i=\frac{k(k+1)}{2}+(k+1)=(k+1)\frac{k+2}{2}$. ✓
+\end{example}
+
+\subsection*{5.2 Recursive Sequences}
+
+\begin{itemize}[nosep]
+  \item Fibonacci: $F_0=0,F_1=1,F_n=F_{n-1}+F_{n-2}$.
+  \item Factorial: $0!=1$, $n!=n\cdot(n-1)!$.
+\end{itemize}
+
+\subsection*{5.3 Linear Recurrences — Characteristic Polynomial}
+
+For $a_n = c_1 a_{n-1}+c_2 a_{n-2}$ (order 2, constant coefficients), find roots of $r^2-c_1 r-c_2=0$.
+
+\begin{tcolorbox}[keybox={Three cases}]
+\begin{enumerate}[nosep,label=\Roman*.]
+  \item \textbf{Distinct real roots} $r_1\ne r_2$: $a_n=A r_1^n+B r_2^n$.
+  \item \textbf{Repeated root} $r_1=r_2=r$: $a_n=(A+Bn)r^n$.
+  \item \textbf{Complex roots} $r=\alpha\pm\beta i$ (briefly): $a_n=\rho^n(A\cos n\theta+B\sin n\theta)$ where $\rho=|r|,\theta=\arg r$. (Focus is on cases I–II.)
+\end{enumerate}
+Use initial conditions $a_0,a_1$ to find $A,B$.
+\end{tcolorbox}
+
+\begin{example}
+Fibonacci: $a_n=a_{n-1}+a_{n-2}$, so $r^2-r-1=0\Rightarrow r=\frac{1\pm\sqrt5}{2}$.\\
+$\varphi=\frac{1+\sqrt5}{2}$, $\hat\varphi=\frac{1-\sqrt5}{2}$.
+General: $F_n=A\varphi^n+B\hat\varphi^n$. Using $F_0=0,F_1=1$:
+$A=1/\sqrt5$, $B=-1/\sqrt5$.
+$\boxed{F_n=\frac{\varphi^n-\hat\varphi^n}{\sqrt5}}$ (Binet's formula).
+\end{example}
+
+\begin{example}
+Solve $a_n=4a_{n-1}-4a_{n-2}$, $a_0=1,a_1=4$.\\
+$r^2-4r+4=0\Rightarrow (r-2)^2=0\Rightarrow r=2$ (repeated).\\
+$a_n=(A+Bn)2^n$. From $a_0=A=1$; $a_1=2(A+B)=4\Rightarrow B=1$.\\
+$a_n=(1+n)2^n$.
+\end{example}
+
+\begin{practice}
+\begin{enumerate}[nosep,label=\arabic*.]
+  \item Prove by induction: $\sum_{i=0}^n 2^i = 2^{n+1}-1$.
+  \item Prove by strong induction: every $n\ge2$ has a prime factor.
+  \item Solve the recurrence $a_n=5a_{n-1}-6a_{n-2}$, $a_0=1,a_1=0$.
+  \item Solve $a_n=6a_{n-1}-9a_{n-2}$, $a_0=0,a_1=3$.
+  \item Find a closed form for $a_n=a_{n-1}+2,\ a_0=5$.
+\end{enumerate}
+\end{practice}
+
+\newpage
+%% ═══════════════════════════════════════════════════════════════════════════
+%%  WEEK 6 — COUNTING PRINCIPLES
+%% ═══════════════════════════════════════════════════════════════════════════
+\section{Week 6: Counting Principles}
+\setcounter{definition}{0}
+
+\subsection*{6.1 Sum and Product Rules}
+
+\begin{tcolorbox}[keybox={Sum and Product Rules}]
+\textbf{Sum}: if task can be done in $m$ ways \emph{or} $n$ ways (disjoint alternatives), total = $m+n$.\\
+\textbf{Product}: if task has $k$ sequential steps with $n_1,n_2,\ldots,n_k$ choices each, total = $n_1\cdot n_2\cdots n_k$.
+\end{tcolorbox}
+
+\begin{example}
+Passwords: 6 characters, each uppercase letter or digit. $36^6=2{,}176{,}782{,}336$ passwords (product rule).\\
+License plates: 3 letters then 3 digits: $26^3\cdot10^3=17{,}576{,}000$ (product rule).
+\end{example}
+
+\subsection*{6.2 Inclusion--Exclusion Principle}
+
+\begin{tcolorbox}[keybox={Inclusion--Exclusion}]
+\vspace{2pt}
+Two sets: $|A\cup B|=|A|+|B|-|A\cap B|$.\\[4pt]
+Three sets:
+\[|A\cup B\cup C|=|A|+|B|+|C|-|A\cap B|-|A\cap C|-|B\cap C|+|A\cap B\cap C|.\]
+\end{tcolorbox}
+
+\begin{example}
+Students who study French or German: $|F|=25,|G|=30,|F\cap G|=10$.\\
+$|F\cup G|=25+30-10=45$.
+\end{example}
+
+\begin{example}
+Integers $1$–$100$ divisible by 2, 3, or 5:\\
+$|A|=50,|B|=33,|C|=20$; $|A\cap B|=16,|A\cap C|=10,|B\cap C|=6$; $|A\cap B\cap C|=3$.\\
+$|A\cup B\cup C|=50+33+20-16-10-6+3=74$.
+\end{example}
+
+\subsection*{6.3 Pigeonhole Principle}
+
+\begin{tcolorbox}[keybox={Pigeonhole}]
+\textbf{Simple}: if $n+1$ objects go into $n$ boxes, some box has $\ge2$ objects.\\
+\textbf{Generalized}: if $N$ objects go into $k$ boxes, some box has $\ge\lceil N/k\rceil$ objects.
+\end{tcolorbox}
+
+\begin{example}
+Among any 367 people, at least 2 share a birthday (365 possible days, $\lceil367/365\rceil=2$).
+\end{example}
+
+\begin{example}
+Among 100 integers, at least $\lceil100/10\rceil=10$ have the same last digit (10 possible last digits).
+\end{example}
+
+\begin{example}
+In a group of 5 points inside a $2\times2$ square, by pigeonhole (4 unit squares), at least 2 points are within distance $\sqrt2$ of each other.
+\end{example}
+
+\begin{practice}
+\begin{enumerate}[nosep,label=\arabic*.]
+  \item How many bit strings of length 8 start with 1 or end with 00?
+  \item In a city of 3 million people, must at least two people have the same number of hairs? (Hair count $<200{,}000$.)
+  \item 100 integers are chosen from $\{1,\ldots,200\}$. Prove two are consecutive.
+  \item Students: 120 study math, 80 study CS, 40 study both. How many study math or CS?
+  \item How many integers $1$–$1000$ are divisible by 3 or 5 but not by 15?
+\end{enumerate}
+\end{practice}
+
+\newpage
+%% ═══════════════════════════════════════════════════════════════════════════
+%%  WEEK 7 — PERMUTATIONS AND COMBINATIONS
+%% ═══════════════════════════════════════════════════════════════════════════
+\section{Week 7: Permutations and Combinations}
+\setcounter{definition}{0}
+
+\subsection*{7.1 Permutations}
+
+\begin{tcolorbox}[keybox={Permutations $P(n,k)$}]
+Ordered selections of $k$ items from $n$ distinct items:
+\[P(n,k)=\frac{n!}{(n-k)!}=n(n-1)\cdots(n-k+1).\]
+\end{tcolorbox}
+
+\begin{example}
+Ways to arrange 3 books from a shelf of 7: $P(7,3)=7\cdot6\cdot5=210$.
+\end{example}
+
+\subsection*{7.2 Combinations}
+
+\begin{tcolorbox}[keybox={Combinations $C(n,k)=\binom{n}{k}$}]
+Unordered selections of $k$ items from $n$ distinct items:
+\[\binom{n}{k}=\frac{n!}{k!(n-k)!}=\frac{P(n,k)}{k!}.\]
+\end{tcolorbox}
+
+\begin{example}
+Committee of 3 from 7 people: $\binom{7}{3}=35$. \quad $\binom{n}{0}=\binom{n}{n}=1$.
+\end{example}
+
+\subsection*{7.3 Combinations with Repetition}
+
+Choosing $k$ items from $n$ types, repetition allowed, order doesn't matter:
+\[C(n+k-1,k)=\binom{n+k-1}{k}.\]
+
+\begin{example}
+Buy 6 donuts from 4 flavors: $\binom{4+6-1}{6}=\binom{9}{6}=84$.
+\end{example}
+
+\subsection*{7.4 Binomial Theorem}
+
+\begin{tcolorbox}[keybox={Binomial Theorem}]
+\[(x+y)^n=\sum_{k=0}^{n}\binom{n}{k}x^k y^{n-k}.\]
+\end{tcolorbox}
+
+\begin{example}
+$(x+y)^4=\binom40 y^4+\binom41 xy^3+\binom42 x^2y^2+\binom43 x^3y+\binom44 x^4$
+$=y^4+4xy^3+6x^2y^2+4x^3y+x^4$.
+\end{example}
+
+\subsection*{7.5 Pascal's Identity}
+
+\[\binom{n}{k}=\binom{n-1}{k-1}+\binom{n-1}{k}.\]
+
+\textit{Combinatorial proof}: either element $n$ is in the subset (choose $k-1$ from $n-1$) or it is not (choose $k$ from $n-1$).
+
+Useful identities:
+\begin{itemize}[nosep]
+  \item $\sum_{k=0}^n\binom nk=2^n$ (set $x=y=1$).
+  \item $\sum_{k=0}^n(-1)^k\binom nk=0$ (set $x=-1,y=1$).
+\end{itemize}
+
+\begin{practice}
+\begin{enumerate}[nosep,label=\arabic*.]
+  \item How many 5-card hands from a 52-card deck?
+  \item Prove $\binom{n}{k}=\binom{n}{n-k}$.
+  \item How many ways to distribute 10 identical balls into 4 distinct boxes?
+  \item Find the coefficient of $x^3y^5$ in $(x+y)^8$.
+  \item Find the coefficient of $x^4$ in $(1+x)^{10}$.
+\end{enumerate}
+\end{practice}
+
+\newpage
+%% ═══════════════════════════════════════════════════════════════════════════
+%%  WEEK 8 — GRAPH THEORY: BASICS
+%% ═══════════════════════════════════════════════════════════════════════════
+\section{Week 8: Graph Theory — Definitions and Isomorphism}
+\setcounter{definition}{0}
+
+\subsection*{8.1 Basic Definitions}
+
+\begin{tcolorbox}[keybox={Graph vocabulary}]
+\begin{tabular}{@{}ll@{}}
+\textbf{Simple graph} & $G=(V,E)$: no loops, no multi-edges\\
+\textbf{Multigraph}   & allows multiple edges between same pair\\
+\textbf{Degree} $\deg(v)$ & number of edges incident to $v$\\
+$\delta(G)$           & minimum degree; $\Delta(G)$ maximum degree\\
+\textbf{Complete} $K_n$ & every pair of vertices connected\\
+\textbf{Bipartite}    & $V=X\cup Y$, edges only between $X$ and $Y$\\
+\end{tabular}
+\end{tcolorbox}
+
+\begin{theorem}[Handshaking Lemma]
+$\displaystyle\sum_{v\in V}\deg(v)=2|E|$. \\
+Corollary: the number of odd-degree vertices is even.
+\end{theorem}
+
+\begin{example}
+$K_4$: 4 vertices, $\binom{4}{2}=6$ edges; each vertex has degree 3. Sum of degrees: $4\cdot3=12=2\cdot6$. ✓
+\end{example}
+
+\subsection*{8.2 Graph Isomorphism}
+
+\begin{definition}
+$G_1=(V_1,E_1)$ and $G_2=(V_2,E_2)$ are \textbf{isomorphic} if there exists a bijection $f:V_1\to V_2$ such that $\{u,v\}\in E_1\Leftrightarrow\{f(u),f(v)\}\in E_2$.
+\end{definition}
+
+\textbf{Necessary conditions} (not sufficient!):
+\begin{itemize}[nosep]
+  \item Same number of vertices and edges.
+  \item Same degree sequence (sorted).
+  \item Same number of cycles, paths, connected components.
+\end{itemize}
+
+\begin{example}
+Two graphs on 4 vertices: $G_1$ is a 4-cycle ($C_4$, degree sequence $[2,2,2,2]$) and $G_2$ is a path $P_4$ (degree sequence $[1,2,2,1]$). Different degree sequences $\Rightarrow$ not isomorphic.
+\end{example}
+
+\begin{example}
+$G_1$: vertices $\{a,b,c,d\}$, edges $ab,bc,cd,da$. $G_2$: vertices $\{1,2,3,4\}$, edges $12,23,34,41$. Both $C_4$; map $a\mapsto1,b\mapsto2,c\mapsto3,d\mapsto4$. Isomorphic.
+\end{example}
+
+\textbf{Checklist for isomorphism:}
+\begin{enumerate}[nosep,label=\arabic*.]
+  \item Check $|V|,|E|$, degree sequences.
+  \item Check cycles of each length.
+  \item Try to construct explicit bijection.
+\end{enumerate}
+
+\begin{practice}
+\begin{enumerate}[nosep,label=\arabic*.]
+  \item Prove $K_5$ has 10 edges and each vertex has degree 4.
+  \item A graph has 6 vertices, degrees $2,2,3,3,3,3$. How many edges?
+  \item Are the following isomorphic? $G_1$: $C_6$ (6-cycle). $G_2$: two triangles sharing no vertices.
+  \item How many non-isomorphic simple graphs are there on 3 vertices?
+  \item Show that if a graph has exactly two vertices of odd degree, those vertices are connected by a path.
+\end{enumerate}
+\end{practice}
+
+\newpage
+%% ═══════════════════════════════════════════════════════════════════════════
+%%  WEEK 9 — PATHS AND CIRCUITS
+%% ═══════════════════════════════════════════════════════════════════════════
+\section{Week 9: Paths and Circuits}
+\setcounter{definition}{0}
+
+\subsection*{9.1 Terminology}
+
+\begin{tcolorbox}[keybox={Walk / Trail / Path / Circuit}]
+\begin{tabular}{@{}ll@{}}
+\textbf{Walk}     & sequence of vertices, edges can repeat\\
+\textbf{Trail}    & walk with no repeated edge\\
+\textbf{Path}     & walk with no repeated vertex\\
+\textbf{Circuit}  & closed trail (starts = ends, no repeated edge)\\
+\textbf{Cycle}    & closed path (no repeated vertex except start=end)\\
+\end{tabular}
+\end{tcolorbox}
+
+\subsection*{9.2 Eulerian Circuits}
+
+\begin{theorem}[Euler's Theorem]
+A connected graph has an \textbf{Eulerian circuit} (traverses every edge exactly once, returns to start) if and only if every vertex has even degree.\\
+It has an \textbf{Eulerian trail} (doesn't need to return) iff it has exactly 0 or 2 vertices of odd degree.
+\end{theorem}
+
+\begin{example}
+The Königsberg Bridge problem: 4 vertices, degrees $3,3,5,3$ (all odd). No Eulerian trail exists.\\
+$K_4$: all degrees 3 (odd). No Eulerian circuit; 2 odd-degree vertices needed for trail — fails.
+\end{example}
+
+\subsection*{9.3 Hamiltonian Cycles}
+
+\begin{definition}
+A \textbf{Hamiltonian cycle} visits every vertex exactly once (returns to start).
+\end{definition}
+
+No simple characterization like Euler's exists. A sufficient condition:
+
+\begin{theorem}[Dirac's Theorem]
+If $G$ is simple, $|V|\ge3$, and every vertex satisfies $\deg(v)\ge|V|/2$, then $G$ has a Hamiltonian cycle.
+\end{theorem}
+
+\begin{tcolorbox}[notebox]
+Dirac's condition is \emph{sufficient} but not \emph{necessary}. $C_5$ is Hamiltonian but $\delta=2<5/2=2.5$.
+\end{tcolorbox}
+
+\subsection*{9.4 Adjacency Matrix and Walks}
+
+The \textbf{adjacency matrix} $A$ of $G$ has $A_{ij}=1$ if $\{i,j\}\in E$, else $0$.
+
+\begin{tcolorbox}[keybox={Powers of adjacency matrix}]
+$(A^k)_{ij}$ = number of walks of length $k$ from $i$ to $j$.
+\end{tcolorbox}
+
+\begin{example}
+$C_4$ (4-cycle $1{-}2{-}3{-}4{-}1$):
+\[A=\begin{pmatrix}0&1&0&1\\1&0&1&0\\0&1&0&1\\1&0&1&0\end{pmatrix},\quad A^2=\begin{pmatrix}2&0&2&0\\0&2&0&2\\2&0&2&0\\0&2&0&2\end{pmatrix}.\]
+$(A^2)_{13}=2$: walks $1{-}2{-}3$ and $1{-}4{-}3$. ✓
+\end{example}
+
+\subsection*{9.5 Euler vs.\ Hamiltonian}
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+ & \textbf{Eulerian} & \textbf{Hamiltonian}\\
+\midrule
+Visits & every \emph{edge} once & every \emph{vertex} once\\
+Characterization & clean (degree parity) & no clean iff (NP-hard)\\
+Algorithm & Hierholzer's $O(|E|)$ & no poly-time known in general\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{practice}
+\begin{enumerate}[nosep,label=\arabic*.]
+  \item Does $K_5$ have an Eulerian circuit? An Eulerian trail?
+  \item Does $K_{3,3}$ (complete bipartite) have a Hamiltonian cycle?
+  \item Compute $A^2$ for the path $P_3$ ($1{-}2{-}3$) and interpret $(A^2)_{13}$.
+  \item For which $n$ does $K_n$ have an Eulerian circuit?
+  \item Verify Dirac's condition for $K_5$ and conclude it is Hamiltonian.
+\end{enumerate}
+\end{practice}
+
+\newpage
+%% ═══════════════════════════════════════════════════════════════════════════
+%%  WEEK 10 — PLANAR GRAPHS AND COLORING
+%% ═══════════════════════════════════════════════════════════════════════════
+\section{Week 10: Planar Graphs and Graph Coloring}
+\setcounter{definition}{0}
+
+\subsection*{10.1 Planar Graphs}
+
+\begin{definition}
+$G$ is \textbf{planar} if it can be drawn in the plane with no edge crossings.
+\end{definition}
+
+\begin{theorem}[Euler's Formula]
+For a connected planar graph: $V-E+F=2$, where $F$ = number of faces (including the outer face).
+\end{theorem}
+
+\begin{example}
+$K_4$: $V=4,E=6$. Drawn planar: $F=4$. $4-6+4=2$. ✓
+\end{example}
+
+\textbf{Corollary}: For a simple planar graph with $V\ge3$: $E\le 3V-6$.\\
+For bipartite planar graphs with $V\ge3$: $E\le 2V-4$.
+
+\begin{theorem}[Kuratowski's Theorem]
+$G$ is non-planar iff it contains a subdivision of $K_5$ or $K_{3,3}$ as a subgraph.
+\end{theorem}
+
+\begin{example}
+$K_5$: $V=5,E=10$. $3V-6=9<10$, so $K_5$ is non-planar by the corollary.\\
+$K_{3,3}$: $V=6,E=9$. $2V-4=8<9$ (bipartite bound), so $K_{3,3}$ is non-planar.
+\end{example}
+
+\subsection*{10.2 Graph Coloring}
+
+\begin{definition}
+A \textbf{proper $k$-coloring} assigns colors $\{1,\ldots,k\}$ to vertices so adjacent vertices get different colors. The \textbf{chromatic number} $\chi(G)$ is the minimum $k$.
+\end{definition}
+
+\begin{tcolorbox}[keybox={Key chromatic numbers}]
+\begin{itemize}[nosep]
+  \item $\chi(K_n)=n$: all pairs adjacent, all different colors.
+  \item $\chi(\text{bipartite})=2$ (if at least one edge; 1 if no edges).
+  \item $\chi(C_n)=2$ if $n$ even; $=3$ if $n$ odd.
+  \item \textbf{4-Color Theorem}: every planar graph satisfies $\chi(G)\le4$.
+\end{itemize}
+\end{tcolorbox}
+
+\subsection*{10.3 Greedy Coloring Algorithm}
+
+\begin{lstlisting}[caption={Greedy graph coloring}]
+Input:  G = (V, E), vertex ordering v1, v2, ..., vn
+Output: coloring c[v] for each vertex
+
+for i = 1 to n:
+  forbidden = {c[u] : u in neighbors(vi) and u already colored}
+  c[vi] = smallest positive integer not in forbidden
+return c
+\end{lstlisting}
+
+\textbf{Properties:}
+\begin{itemize}[nosep]
+  \item Uses at most $\Delta(G)+1$ colors.
+  \item Result depends on vertex ordering; not always optimal.
+  \item Running time: $O(|V|+|E|)$.
+\end{itemize}
+
+\begin{example}
+$C_5$ (5-cycle, $v_1$–$v_5$–$v_4$–$v_3$–$v_2$–$v_1$):
+Order $v_1,v_2,v_3,v_4,v_5$.\\
+$c(v_1)=1$; $c(v_2)=2$ ($v_1$ forbidden); $c(v_3)=1$ ($v_2$ forbidden);\\
+$c(v_4)=2$ ($v_3$ forbidden); $c(v_5)=3$ ($v_1=1$ and $v_4=2$ forbidden).\\
+Greedy uses 3 colors. Optimal: $\chi(C_5)=3$. ✓
+\end{example}
+
+\begin{practice}
+\begin{enumerate}[nosep,label=\arabic*.]
+  \item Verify Euler's formula for the octahedron ($V=6,E=12$).
+  \item Is $K_{3,3}$ planar? Use the bipartite corollary to show not.
+  \item Find $\chi(K_{2,3})$ and $\chi(C_6)$.
+  \item Apply greedy coloring to $K_4$ in any vertex order.
+  \item A map has 5 regions where each pair of adjacent regions shares a border. What is the minimum number of colors to color it?
+\end{enumerate}
+\end{practice}
+
+\newpage
+%% ═══════════════════════════════════════════════════════════════════════════
+%%  SOLUTIONS
+%% ═══════════════════════════════════════════════════════════════════════════
+\section*{Solutions to Practice Problems}
+\addcontentsline{toc}{section}{Solutions to Practice Problems}
+
+\subsection*{Week 1 — Propositional Logic}
+\begin{enumerate}[nosep,label=\arabic*.]
+  \item Build truth table with 8 rows; formula is not a tautology (F when $p$=F, $q$=F, $r$=F).
+  \item $p\lor(p\land q)\equiv (p\lor p)\land(p\lor q)\equiv p\land(p\lor q)\equiv p$. Use distributivity then absorption.
+  \item $\neg(p\ra q)\equiv\neg(\neg p\lor q)\equiv p\land\neg q$. DNF: $p\land\neg q$ (single minterm).
+  \item Build truth table: both sides are T exactly when $p,q$ have same value.
+  \item Yes — it is the \textbf{hypothetical syllogism} tautology. Check: when $p$=T, $q$=F, $r$=T, we get $((T\ra F)\land(F\ra T))\ra(T\ra T)=(F\land T)\ra T=F\ra T=T$. All rows are T.
+\end{enumerate}
+
+\subsection*{Week 2 — Sets and Relations}
+\begin{enumerate}[nosep,label=\arabic*.]
+  \item Let $x\in A\setminus(B\cap C)$. Then $x\in A$ and $x\notin B\cap C$, so $x\notin B$ or $x\notin C$. Hence $x\in(A\setminus B)\cup(A\setminus C)$. Reverse inclusion similar.
+  \item Not an equivalence relation: not reflexive (no one is their own sibling), not transitive in some definitions.
+  \item Classes: $\{0,4,8\}$, $\{1,5,9\}$, $\{2,6,10\}$, $\{3,7,11\}$.
+  \item Hasse: $8$ on top; $4$ below; then $2$; then $1$ at bottom. Single chain.
+  \item Reflexive + symmetric subsets of $\{1,2,3\}^2$: 3 reflexive pairs fixed; choose from 3 symmetric off-diagonal pairs ($\{12,21\},\{13,31\},\{23,32\}$). Total: $2^3=8$ relations.
+\end{enumerate}
+
+\subsection*{Week 3 — Functions}
+\begin{enumerate}[nosep,label=\arabic*.]
+  \item Injective (yes: $f(a)=f(b)\Rightarrow a+1=b+1$). Not surjective ($0$ has no preimage in $\N$ with $\N=\{1,2,\ldots\}$; or surjective if $\N=\{0,1,\ldots\}$).
+  \item $(f\circ g)(2)=f(4)=11$. $(g\circ f)(2)=g(5)=25$.
+  \item Enumerate all finite binary strings by length, then lexicographically: $\epsilon,0,1,00,01,10,11,\ldots$
+  \item $|\mathcal{P}(\{1,2,3,4\})|=2^4=16$.
+  \item No. Counterexample: $A=\{1\},B=\{1,2\},C=\{1,2\}$; $f(1)=1$ (injective); $g(1)=1,g(2)=2$ (surjective); $(g\circ f)(1)=1$ but $2\in C$ not hit. So no.
+\end{enumerate}
+
+\subsection*{Week 4 — Integers}
+\begin{enumerate}[nosep,label=\arabic*.]
+  \item $252=2\cdot105+42$; $105=2\cdot42+21$; $42=2\cdot21+0$. $\gcd=21$.
+  \item $7x\equiv1\pmod{11}$: $7\cdot8=56=5\cdot11+1\equiv1$. Inverse $=8$.
+  \item $\gcd(15,25)=5$, $5\divides9$? No! So \textbf{no solution}.
+  \item $M=28$; $M_1=7,y_1$: $7y_1\equiv1\pmod4\Rightarrow 3y_1\equiv1\Rightarrow y_1=3$. $M_2=4,y_2$: $4y_2\equiv1\pmod7\Rightarrow y_2=2$. $x\equiv3\cdot7\cdot3+5\cdot4\cdot2=63+40=103\equiv103-3\cdot28=103-84=19\pmod{28}$.
+  \item $\gcd(12,9)=3$, $3\divides21$ ✓. $12x+9y=21\Rightarrow4x+3y=7$. One solution: $x=4,y=-3$. General: $x=4+3t,y=-3-4t$.
+\end{enumerate}
+
+\subsection*{Week 5 — Induction and Recursion}
+\begin{enumerate}[nosep,label=\arabic*.]
+  \item Base $n=0$: $1=2^1-1$ ✓. Step: $\sum_{i=0}^{k+1}2^i=2^{k+1}-1+2^{k+1}=2^{k+2}-1$. ✓
+  \item Base $n=2$: 2 is prime ✓. Step: let $n>2$. If $n$ prime, done. Otherwise $n=ab$ with $1<a<n$; by strong hypothesis $a$ has a prime factor, which divides $n$.
+  \item Char poly: $r^2-5r+6=0\Rightarrow r=2,3$. $a_n=A\cdot2^n+B\cdot3^n$. $a_0=A+B=1$; $a_1=2A+3B=0$. $B=-2,A=3$. $a_n=3\cdot2^n-2\cdot3^n$.
+  \item Char poly: $(r-3)^2=0\Rightarrow r=3$. $a_n=(A+Bn)3^n$. $a_0=A=0$; $a_1=3B=3\Rightarrow B=1$. $a_n=n\cdot3^n$.
+  \item $a_n=5+2n$ (arithmetic sequence with $d=2$).
+\end{enumerate}
+
+\subsection*{Week 6 — Counting Principles}
+\begin{enumerate}[nosep,label=\arabic*.]
+  \item Start with 1: $2^7=128$. End with 00: $2^6=64$. Both: start 1, end 00 $\Rightarrow 2^5=32$. Total: $128+64-32=160$.
+  \item Yes: $3{,}000{,}000 > 200{,}000$, so by pigeonhole at least $\lceil3{,}000{,}000/200{,}000\rceil=15$ people share the same hair count.
+  \item Pigeonhole: 100 integers from 200; by PHP among any 100 consecutive pairs $\{(1,2),(3,4),\ldots,(199,200)\}$ — actually: partition into 100 pairs. Each chosen integer lands in one pair; with 100 integers and 100 pairs, some pair is fully covered.
+  \item $|M\cup C|=120+80-40=160$.
+  \item By 3: $\lfloor1000/3\rfloor=333$. By 5: 200. By 15: 66. Div by 3 or 5: $333+200-66=467$. Div by 15: 66. Div by 3 or 5 but not 15: $467-66=401$.
+\end{enumerate}
+
+\subsection*{Week 7 — Permutations and Combinations}
+\begin{enumerate}[nosep,label=\arabic*.]
+  \item $\binom{52}{5}=2{,}598{,}960$.
+  \item $\binom{n}{n-k}=\frac{n!}{(n-k)!k!}=\binom{n}{k}$.
+  \item Stars and bars: $\binom{10+4-1}{10}=\binom{13}{10}=286$.
+  \item $\binom{8}{3}=56$.
+  \item $\binom{10}{4}=210$.
+\end{enumerate}
+
+\subsection*{Week 8 — Graph Theory}
+\begin{enumerate}[nosep,label=\arabic*.]
+  \item $E=\binom52=10$. Each vertex connects to 4 others. $\sum\deg=5\cdot4=20=2\cdot10$. ✓
+  \item $\sum\deg=2+2+3+3+3+3=16$, so $|E|=8$.
+  \item $G_1=C_6$: degree sequence $[2,2,2,2,2,2]$, connected, one component. $G_2$: two triangles, degree sequence $[2,2,2,2,2,2]$, \textbf{two} components. Not isomorphic (different connectivity).
+  \item Non-isomorphic graphs on 3 vertices: 4 (0 edges, 1 edge, 2 edges ($P_3$), 3 edges ($K_3$)).
+  \item Use Euler's theorem on connected components or direct argument via induction.
+\end{enumerate}
+
+\subsection*{Week 9 — Paths and Circuits}
+\begin{enumerate}[nosep,label=\arabic*.]
+  \item $K_5$: all 5 degrees are 4 (even). Connected. Eulerian circuit exists. For Eulerian trail: 0 odd vertices, so also has circuits (which are trails).
+  \item $K_{3,3}$: bipartite, 6 vertices, each degree 3 (odd). Eulerian circuit: no (odd degrees). Hamiltonian cycle: yes — can be verified directly (e.g., $1{-}a{-}2{-}b{-}3{-}c{-}1$).
+  \item $A=\begin{pmatrix}0&1&0\\1&0&1\\0&1&0\end{pmatrix}$; $A^2=\begin{pmatrix}1&0&1\\0&2&0\\1&0&1\end{pmatrix}$. $(A^2)_{13}=1$: one walk $1{-}2{-}3$.
+  \item $K_n$ has all vertices of degree $n-1$. Eulerian circuit requires all even degrees: $n-1$ even iff $n$ is odd. So $K_n$ has Eulerian circuit iff $n$ is odd.
+  \item $K_5$: $n=5$, $\delta=4\ge5/2=2.5$. Dirac satisfied $\Rightarrow$ Hamiltonian cycle exists.
+\end{enumerate}
+
+\subsection*{Week 10 — Planar Graphs and Coloring}
+\begin{enumerate}[nosep,label=\arabic*.]
+  \item Octahedron: $V=6,E=12,F=8$. $6-12+8=2$. ✓
+  \item $K_{3,3}$: $V=6,E=9$. Bipartite bound: $E\le2V-4=8$. But $9>8$. Non-planar.
+  \item $\chi(K_{2,3})=2$ (bipartite with edges). $\chi(C_6)=2$ (even cycle).
+  \item $K_4$, order $v_1,v_2,v_3,v_4$: $c(v_1)=1,c(v_2)=2,c(v_3)=3,c(v_4)=4$. Uses 4 colors $=\chi(K_4)$. ✓
+  \item If each pair of 5 regions shares a border, the underlying graph is $K_5$, which is non-planar. In planar maps, $K_5$ cannot occur, but the 4-color theorem still applies: 4 colors suffice. If the graph truly requires all pairs adjacent, $\chi=5$; but such a configuration is non-planar and thus cannot arise from a planar map, so in practice 4 colors always suffice.
+\end{enumerate}
+
+\end{document}
