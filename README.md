@@ -1,4 +1,3 @@
-```markdown
 # 📐 Discrete Math Notes — Weeks 1 to 10
 
 Personal lecture notes for a 10-week Discrete Mathematics course. Written in LaTeX, compiled to PDF, and organized by week. Made for myself, shared in case they help someone else.
