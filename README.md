@@ -1,17 +1,16 @@
-
 ```markdown
-# Discrete Math Notes — Weeks 1 to 10
+# 📐 Discrete Math Notes — Weeks 1 to 10
 
-My lecture notes for a 10-week Discrete Mathematics course. Written in LaTeX, compiled to PDF, and organized by week. Made for myself, shared in case they help someone else.
+Personal lecture notes for a 10-week Discrete Mathematics course. Written in LaTeX, compiled to PDF, and organized by week. Made for myself, shared in case they help someone else.
 
-## Author
+## 👤 Author
 
 **Bakdaulet Sotsial** — student at Astana IT University.
 
-## Topics
+## 📚 Topics
 
 | Week | Topic |
-|------|-------|
+|:----:|:------|
 | 1 | Propositional logic, logical operators, truth tables, applications, propositional equivalences, disjunctive normal forms |
 | 2 | Sets and relations: set operations, Venn diagrams, binary relations (reflexive, symmetric, anti-symmetric, transitive), equivalence relations, partial and total orders |
 | 3 | Functions: one-to-one, onto, bijective functions, inverse functions, composition of functions, cardinality of sets |
@@ -23,10 +22,7 @@ My lecture notes for a 10-week Discrete Mathematics course. Written in LaTeX, co
 | 9 | Paths and circuits: Eulerian circuits, Hamiltonian cycles, adjacency matrix |
 | 10 | Planar graphs and colorings: planar graphs, graph coloring |
 
-
-```
-
-## Compiling
+## ⚙️ Compiling
 
 ```bash
 pdflatex Week1.tex
@@ -34,10 +30,10 @@ pdflatex Week1.tex
 
 Or just grab the PDFs directly.
 
-## Disclaimer
+## ⚠️ Disclaimer
 
 Personal lecture notes, not official course materials. Might have a typo here and there — wrote them while studying.
 
-## License
+## 📄 License
 
 Free to use and share with attribution.
